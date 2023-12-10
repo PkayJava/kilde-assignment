@@ -1,0 +1,62 @@
+plugins {
+    id 'org.springframework.boot' version "${spring_boot}"
+    id 'io.spring.dependency-management' version "${spring_dependency_management}"
+    id 'java'
+}
+
+group = 'com.senior.kilde.assignment'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = "$java_version"
+    targetCompatibility = "$java_version"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":kilde-assignment-dao")
+
+    implementation "com.senior.cyber.frmk:common:1.0.0"
+    implementation "com.senior.cyber.frmk:jdbc-query:1.0.0"
+    implementation "com.senior.cyber.frmk:metamodel:1.0.0"
+
+    implementation "joda-time:joda-time:${joda_time}"
+    implementation "commons-validator:commons-validator:${commons_validator}"
+//    implementation "com.dropbox.core:dropbox-core-sdk:${dropbox}"
+//    implementation "org.apache.wicket:wicket-util:${wicket}"
+
+//    implementation "org.bouncycastle:bcprov-jdk15to18:${bouncycastle}"
+//    implementation "org.bouncycastle:bcpkix-jdk15to18:${bouncycastle}"
+//    implementation "org.bouncycastle:bcpg-jdk15to18:${bouncycastle}"
+
+    implementation "commons-io:commons-io:${commons_io}"
+    implementation "org.apache.commons:commons-lang3:${commons_lang3}"
+    implementation "org.springframework.boot:spring-boot-starter:${spring_boot}"
+    implementation "org.springframework.boot:spring-boot-starter-jdbc:${spring_boot}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${spring_boot}"
+
+    implementation "org.liquibase:liquibase-core:${liquibase}"
+    implementation "org.flywaydb:flyway-core:${flyway}"
+    implementation "org.flywaydb:flyway-mysql:${flyway}"
+    implementation "com.mysql:mysql-connector-j:${mysql}"
+
+    // implementation "org.springframework.cloud:spring-cloud-starter-config"
+
+    compileOnly "org.projectlombok:lombok:${lombok}"
+    annotationProcessor "org.projectlombok:lombok:${lombok}"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${spring_cloud}"
+    }
+}
+
+bootJar {
+    archiveBaseName = "kilde-assignment-ddl"
+    archiveVersion = ""
+}

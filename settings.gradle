@@ -1,0 +1,14 @@
+rootProject.name = "kilde-assignment"
+
+include(
+        ":kilde-assignment-ddl",
+        ":kilde-assignment-dao",
+        ":kilde-assignment-scommon",
+        ":kilde-assignment-api",
+        ":kilde-assignment-web"
+)
+project(":kilde-assignment-ddl").projectDir = file("./kilde-assignment-ddl")
+project(":kilde-assignment-dao").projectDir = file("./kilde-assignment-dao")
+project(":kilde-assignment-scommon").projectDir = file("./kilde-assignment-scommon")
+project(":kilde-assignment-api").projectDir = file("./kilde-assignment-api")
+project(":kilde-assignment-web").projectDir = file("./kilde-assignment-web")

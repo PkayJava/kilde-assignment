@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body>
+<wicket:panel>
+    <form wicket:id="form">
+        <div class="card-body">
+            <div wicket:id="row1">
+                <div wicket:id="name_column">
+                    <wicket:container wicket:id="name_container">
+                        <div class="form-group">
+                            <label wicket:for="name_field">Name</label>
+                            <input type="text" wicket:id="name_field" class="form-control"/>
+                            <span wicket:id="name_feedback"/>
+                        </div>
+                    </wicket:container>
+                </div>
+                <div wicket:id="annual_interest_column">
+                    <wicket:container wicket:id="annual_interest_container">
+                        <div class="form-group">
+                            <label wicket:for="annual_interest_field">Annual Interest</label>
+                            <div class="input-group">
+                                <input type="text" wicket:id="annual_interest_field" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                                <span wicket:id="annual_interest_feedback"></span>
+                            </div>
+                        </div>
+                    </wicket:container>
+                </div>
+                <div wicket:id="last_column"/>
+            </div>
+            <div wicket:id="row2">
+                <div wicket:id="amount_available_for_investment_column">
+                    <wicket:container wicket:id="amount_available_for_investment_container">
+                        <div class="form-group">
+                            <label wicket:for="amount_available_for_investment_field">Amount Available For Investment</label>
+                            <div class="input-group">
+                                <input type="text" wicket:id="amount_available_for_investment_field" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">SGD</span>
+                                </div>
+                                <span wicket:id="amount_available_for_investment_feedback"></span>
+                            </div>
+                        </div>
+                    </wicket:container>
+                </div>
+                <div wicket:id="duration_column">
+                    <wicket:container wicket:id="duration_container">
+                        <div class="form-group">
+                            <label wicket:for="duration_field">Duration</label>
+                            <div class="input-group">
+                                <input type="text" wicket:id="duration_field" class="form-control"/>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Month</span>
+                                </div>
+                                <span wicket:id="duration_feedback"/>
+                            </div>
+                        </div>
+                    </wicket:container>
+                </div>
+                <div wicket:id="last_column"/>
+            </div>
+            <div wicket:id="row3">
+                <div wicket:id="minimum_investment_amount_column">
+                    <wicket:container wicket:id="minimum_investment_amount_container">
+                        <div class="form-group">
+                            <label wicket:for="minimum_investment_amount_field">Minimum Investment Amount</label>
+                            <div class="input-group">
+                                <input type="text" wicket:id="minimum_investment_amount_field" class="form-control"/>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">SGD</span>
+                                </div>
+                                <span wicket:id="minimum_investment_amount_feedback"/>
+                            </div>
+                        </div>
+                    </wicket:container>
+                </div>
+                <div wicket:id="maximum_investment_amount_column">
+                    <wicket:container wicket:id="maximum_investment_amount_container">
+                        <div class="form-group">
+                            <label wicket:for="maximum_investment_amount_field">Maximum Investment Amount</label>
+                            <div class="input-group">
+                                <input type="text" wicket:id="maximum_investment_amount_field" class="form-control"/>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">SGD</span>
+                                </div>
+                                <span wicket:id="maximum_investment_amount_feedback"/>
+                            </div>
+                        </div>
+                    </wicket:container>
+                </div>
+                <div wicket:id="maximum_investment_amount_per_investor_column">
+                    <wicket:container wicket:id="maximum_investment_amount_per_investor_container">
+                        <div class="form-group">
+                            <label wicket:for="maximum_investment_amount_per_investor_field">Maximum Investment Amount Per Investor</label>
+                            <div class="input-group">
+                                <input type="text" wicket:id="maximum_investment_amount_per_investor_field" class="form-control"/>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">SGD</span>
+                                </div>
+                                <span wicket:id="maximum_investment_amount_per_investor_feedback"/>
+                            </div>
+                        </div>
+                    </wicket:container>
+                </div>
+                <div wicket:id="last_column"/>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+            <a wicket:id="cancelButton" class="btn btn-default float-right">Cancel</a>
+        </div>
+    </form>
+</wicket:panel>
+</body>
+
+</html>

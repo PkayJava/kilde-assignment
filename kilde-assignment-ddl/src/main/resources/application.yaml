@@ -1,0 +1,18 @@
+server:
+  port: 7001
+  address: 127.0.0.1
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://139.99.121.54:3306/kilde_assignment?autoReconnect=true&useSSL=false'
+    username: 'kilde_assignment'
+    password: 'kilde_assignment'
+  flyway:
+    locations: classpath:com/senior/kilde/assignment/ddl/flyway
+    clean-on-validation-error: true
+    clean-disabled: false
+logging:
+  level:
+    root: info
+    web: info
+    sql: info
