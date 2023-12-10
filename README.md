@@ -24,5 +24,7 @@ cd AdminLTE && git checkout v3
 ## kilde-assignment-web : you will need to update the AdminLET which you clone from the early in application.yaml configuration
 #### admin-lte: /opt/apps/github/ColorlibHQ/v3/AdminLTE
 ```shell
+# default login : admin
+# default password : admin
 ./gradlew kilde-assignment-web:bootRun
 ```
