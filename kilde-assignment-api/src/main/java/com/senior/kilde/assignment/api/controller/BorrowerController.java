@@ -19,8 +19,14 @@ public class BorrowerController {
     }
 
     @RequestMapping(path = "/list")
-    public ResponseEntity<List<Borrower>> borrowerList() {
-        return ResponseEntity.ok(this.borrowerRepository.findAll());
+    public ResponseEntity<List<String>> borrowerList() {
+        List<Borrower> borrowers = this.borrowerRepository.findAll();
+        if (borrowers == null) {
+            return ResponseEntity.ok(null);
+        } else {
+            List<String> body = borrowers.stream().map(Borrower::getName).toList();
+            return ResponseEntity.ok(body);
+        }
     }
 
 }
