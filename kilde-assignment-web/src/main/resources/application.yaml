@@ -3,6 +3,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    # replace according to you ENV
     url: 'jdbc:mysql://139.99.121.54:3306/kilde_assignment?autoReconnect=true&useSSL=false'
     username: 'kilde_assignment'
     password: 'kilde_assignment'
@@ -26,6 +27,7 @@ webui:
   configuration-type: DEPLOYMENT
   wicket-factory: com.senior.kilde.assignment.web.factory.WicketFactory
   pages: com.senior.kilde.assignment.web.pages
+  # replace according to you ENV
   admin-lte: /opt/apps/github/ColorlibHQ/v3/AdminLTE
   csrf: false
 logging:
