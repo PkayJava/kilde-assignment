@@ -11,4 +11,8 @@ public interface InvestorRepository extends JpaRepository<Investor, String> {
 
     Optional<Investor> findByName(String name);
 
+    boolean existsByName(String name);
+
+    boolean existsByIdNotAndName(String id, String name);
+
 }

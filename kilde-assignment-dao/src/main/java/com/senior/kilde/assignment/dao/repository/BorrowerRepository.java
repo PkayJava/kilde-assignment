@@ -11,4 +11,8 @@ public interface BorrowerRepository extends JpaRepository<Borrower, String> {
 
     Optional<Borrower> findByName(String name);
 
+    boolean existsByName(String name);
+
+    boolean existsByIdNotAndName(String id, String name);
+
 }

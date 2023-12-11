@@ -6,13 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Map;
 
 @Entity
 @Table(name = "tbl_investor")
 @Getter
 @Setter
-public class Investor implements Serializable {
+public class Investor implements Serializable, Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,5 +21,14 @@ public class Investor implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
 }

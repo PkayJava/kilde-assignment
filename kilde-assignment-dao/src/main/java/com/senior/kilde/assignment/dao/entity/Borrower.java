@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Table(name = "tbl_borrower")
 @Getter
 @Setter
-public class Borrower implements Serializable {
+public class Borrower implements Serializable, Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,4 +22,12 @@ public class Borrower implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

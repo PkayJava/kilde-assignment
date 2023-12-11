@@ -8,6 +8,9 @@
             <column name="name" type="VARCHAR(100)">
                 <constraints notNullConstraintName="notnull_key_27" nullable="false" unique="true" uniqueConstraintName="unique_index_10"/>
             </column>
+            <column defaultValueNumeric="1" name="version" type="INT(11)">
+                <constraints notNullConstraintName="notnull_key_28" nullable="false"/>
+            </column>
         </createTable>
 
     </changeSet>

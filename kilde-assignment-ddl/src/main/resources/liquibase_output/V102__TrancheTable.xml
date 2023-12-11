@@ -3,28 +3,28 @@
 
         <createTable tableName="tbl_tranche">
             <column name="tranche_id" type="VARCHAR(36)">
-                <constraints notNullConstraintName="notnull_key_30" nullable="false" primaryKey="true" primaryKeyName="primary_key_10"/>
+                <constraints notNullConstraintName="notnull_key_32" nullable="false" primaryKey="true" primaryKeyName="primary_key_10"/>
             </column>
             <column name="name" type="VARCHAR(100)">
-                <constraints notNullConstraintName="notnull_key_31" nullable="false" unique="true" uniqueConstraintName="unique_index_12"/>
+                <constraints notNullConstraintName="notnull_key_33" nullable="false" unique="true" uniqueConstraintName="unique_index_12"/>
             </column>
             <column name="amount_available_for_investment" type="DECIMAL(20,4)">
-                <constraints notNullConstraintName="notnull_key_32" nullable="false"/>
-            </column>
-            <column name="duration" type="INT">
-                <constraints notNullConstraintName="notnull_key_33" nullable="false"/>
-            </column>
-            <column name="minimum_investment_amount" type="DECIMAL(20,4)">
                 <constraints notNullConstraintName="notnull_key_34" nullable="false"/>
             </column>
-            <column name="maximum_investment_amount" type="DECIMAL(20,4)">
+            <column name="duration" type="INT">
                 <constraints notNullConstraintName="notnull_key_35" nullable="false"/>
             </column>
-            <column name="maximum_investment_amount_per_investor" type="DECIMAL(20,4)">
+            <column name="minimum_investment_amount" type="DECIMAL(20,4)">
                 <constraints notNullConstraintName="notnull_key_36" nullable="false"/>
             </column>
-            <column name="annual_interest" type="DECIMAL(8,4)">
+            <column name="maximum_investment_amount" type="DECIMAL(20,4)">
                 <constraints notNullConstraintName="notnull_key_37" nullable="false"/>
+            </column>
+            <column name="maximum_investment_amount_per_investor" type="DECIMAL(20,4)">
+                <constraints notNullConstraintName="notnull_key_38" nullable="false"/>
+            </column>
+            <column name="annual_interest" type="DECIMAL(8,4)">
+                <constraints notNullConstraintName="notnull_key_39" nullable="false"/>
             </column>
         </createTable>
 

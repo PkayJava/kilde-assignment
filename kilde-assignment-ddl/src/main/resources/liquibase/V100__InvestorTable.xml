@@ -11,6 +11,9 @@
             <column name="name" type="VARCHAR(100)">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="version" type="INT(11)" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
     </changeSet>
