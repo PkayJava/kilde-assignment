@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "tbl_account")
@@ -23,7 +24,7 @@ public class Account implements Serializable, Cloneable {
     private String accountNo;
 
     @Column(name = "balance")
-    private Double balance;
+    private BigDecimal balance;
 
     @Version
     @Column(name = "version")

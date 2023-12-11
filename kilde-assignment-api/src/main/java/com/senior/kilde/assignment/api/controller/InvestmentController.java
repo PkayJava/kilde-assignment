@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @RestController
@@ -86,27 +87,27 @@ public class InvestmentController {
 
         Account account = this.accountRepository.findById(investor.getAccount().getId()).orElseThrow();
         account = (Account) account.clone();
-        if (account.getBalance() < request.getAmount()) {
+        if (account.getBalance().doubleValue() < request.getAmount().doubleValue()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "insufficient balance");
         }
 
-        Double limit = tranche.getMaximumInvestmentAmountPerInvestor();
-        if (tranche.getAmountAvailableForInvestment() - tranche.getMaximumInvestmentAmount() > limit) {
-            limit = tranche.getAmountAvailableForInvestment() - tranche.getMaximumInvestmentAmount();
+        BigDecimal limit = tranche.getMaximumInvestmentAmountPerInvestor();
+        if (tranche.getAmountAvailableForInvestment().doubleValue() - tranche.getMaximumInvestmentAmount().doubleValue() > limit.doubleValue()) {
+            limit = BigDecimal.valueOf(tranche.getAmountAvailableForInvestment().doubleValue() - tranche.getMaximumInvestmentAmount().doubleValue());
         }
 
-        if (request.getAmount() > limit) {
+        if (request.getAmount().doubleValue() > limit.doubleValue()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "exceed maximum investment amount, currently available only " + limit);
         }
 
-        if (request.getAmount() < tranche.getMinimumInvestmentAmount()) {
+        if (request.getAmount().doubleValue() < tranche.getMinimumInvestmentAmount().doubleValue()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "exceed minimum investment amount, currently is at least " + tranche.getMinimumInvestmentAmount());
         }
 
-        account.setBalance(account.getBalance() - request.getAmount());
+        account.setBalance(BigDecimal.valueOf(account.getBalance().doubleValue() - request.getAmount().doubleValue()));
         this.accountRepository.save(account);
 
-        tranche.setMaximumInvestmentAmount(tranche.getMaximumInvestmentAmount() + request.getAmount());
+        tranche.setMaximumInvestmentAmount(BigDecimal.valueOf(tranche.getMaximumInvestmentAmount().doubleValue() + request.getAmount().doubleValue()));
         this.trancheRepository.save(tranche);
 
         TrancheFund trancheFund = new TrancheFund();

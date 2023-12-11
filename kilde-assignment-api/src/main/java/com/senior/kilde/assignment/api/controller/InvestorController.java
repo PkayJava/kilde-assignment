@@ -3,14 +3,9 @@ package com.senior.kilde.assignment.api.controller;
 import com.senior.kilde.assignment.api.dto.*;
 import com.senior.kilde.assignment.dao.entity.Account;
 import com.senior.kilde.assignment.dao.entity.Investor;
-import com.senior.kilde.assignment.dao.entity.Investor;
-import com.senior.kilde.assignment.dao.entity.Investor;
 import com.senior.kilde.assignment.dao.repository.AccountRepository;
 import com.senior.kilde.assignment.dao.repository.InvestorRepository;
-import com.senior.kilde.assignment.dao.repository.InvestorRepository;
-import com.senior.kilde.assignment.dao.repository.InvestorRepository;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -79,7 +74,7 @@ public class InvestorController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "name is required");
         }
 
-        if (request.getInitialBalanceAmount() == null || request.getInitialBalanceAmount() < 0) {
+        if (request.getInitialBalanceAmount() == null || request.getInitialBalanceAmount().doubleValue() < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "initialBalanceAmount is required or initialBalanceAmount is negative");
         }
 
@@ -158,7 +153,7 @@ public class InvestorController {
     public ResponseEntity<InvestorDepositResponse> investorDeposit(RequestEntity<InvestorDepositRequest> httpRequest) throws CloneNotSupportedException {
         InvestorDepositRequest request = httpRequest.getBody();
 
-        if (request.getAmount() == null || request.getAmount() <= 0) {
+        if (request.getAmount() == null || request.getAmount().doubleValue() <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "amount is required or amount is not positive");
         }
 
@@ -171,7 +166,7 @@ public class InvestorController {
         Investor investor = optionalInvestor.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
         Account account = accountRepository.findById(investor.getAccount().getId()).orElseThrow();
         account = (Account) account.clone();
-        account.setBalance(account.getBalance() + request.getAmount());
+        account.setBalance(account.getBalance().add(request.getAmount()));
         accountRepository.save(account);
 
         InvestorDepositResponse response = new InvestorDepositResponse();

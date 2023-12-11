@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
@@ -81,7 +82,7 @@ public class BorrowerController {
 
         Account account = new Account();
         account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + RandomStringUtils.randomNumeric(6));
-        account.setBalance(0D);
+        account.setBalance(BigDecimal.valueOf(0D));
         this.accountRepository.save(account);
 
         Borrower borrower = new Borrower();
@@ -150,7 +151,7 @@ public class BorrowerController {
     public ResponseEntity<BorrowerDepositResponse> investorDeposit(RequestEntity<BorrowerDepositRequest> httpRequest) throws CloneNotSupportedException {
         BorrowerDepositRequest request = httpRequest.getBody();
 
-        if (request.getAmount() == null || request.getAmount() <= 0) {
+        if (request.getAmount() == null || request.getAmount().doubleValue() <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "amount is required or amount is not positive");
         }
 
@@ -163,7 +164,7 @@ public class BorrowerController {
         Borrower borrower = optionalBorrower.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
         Account account = accountRepository.findById(borrower.getAccount().getId()).orElseThrow();
         account = (Account) account.clone();
-        account.setBalance(account.getBalance() + request.getAmount());
+        account.setBalance(account.getBalance().add(request.getAmount()));
         accountRepository.save(account);
 
         BorrowerDepositResponse response = new BorrowerDepositResponse();

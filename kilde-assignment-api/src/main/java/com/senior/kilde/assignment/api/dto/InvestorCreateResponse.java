@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class InvestorCreateResponse {
@@ -18,7 +20,7 @@ public class InvestorCreateResponse {
     private String accountNo;
 
     @JsonProperty("balance")
-    private Double balance;
+    private BigDecimal balance;
 
     @JsonProperty("version")
     private Long version;

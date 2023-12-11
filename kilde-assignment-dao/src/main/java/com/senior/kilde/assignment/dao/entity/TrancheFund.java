@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "tbl_tranche_fund")
@@ -28,7 +29,7 @@ public class TrancheFund implements Serializable, Cloneable {
     private Investor investor;
 
     @Column(name = "fund_amount")
-    private Double fundAmount;
+    private BigDecimal fundAmount;
 
     @Version
     @Column(name = "version")

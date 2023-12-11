@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +83,7 @@ public class TrancheController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "maximumInvestmentAmountPerInvestor is required");
         }
 
-        if (request.getMinimumInvestmentAmount() < 0) {
+        if (request.getMinimumInvestmentAmount().doubleValue() < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "minimumInvestmentAmount must greater than or equal 0");
         }
 
@@ -102,7 +103,7 @@ public class TrancheController {
         tranche.setAmountAvailableForInvestment(request.getAmountAvailableForInvestment());
         tranche.setDuration(request.getDuration());
         tranche.setMinimumInvestmentAmount(request.getMinimumInvestmentAmount());
-        tranche.setMaximumInvestmentAmount(0D);
+        tranche.setMaximumInvestmentAmount(BigDecimal.valueOf(0D));
         tranche.setMaximumInvestmentAmountPerInvestor(request.getMaximumInvestmentAmountPerInvestor());
 
         this.trancheRepository.save(tranche);

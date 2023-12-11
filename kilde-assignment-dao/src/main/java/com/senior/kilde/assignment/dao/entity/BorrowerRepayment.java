@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -29,7 +30,7 @@ public class BorrowerRepayment implements Serializable, Cloneable {
     private Borrower borrower;
 
     @Column(name = "loan_amount")
-    private Double loanAmount;
+    private BigDecimal loanAmount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
@@ -48,7 +49,7 @@ public class BorrowerRepayment implements Serializable, Cloneable {
     private Date nextPaymentBackDate;
 
     @Column(name = "next_payment_amount")
-    private Double nextPaymentAmount;
+    private BigDecimal nextPaymentAmount;
 
     @Version
     @Column(name = "version")

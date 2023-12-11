@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class TrancheDetailResponse {
@@ -18,19 +20,19 @@ public class TrancheDetailResponse {
     private Float annualInterest;
 
     @JsonProperty("amountAvailableForInvestment")
-    private Double amountAvailableForInvestment;
+    private BigDecimal amountAvailableForInvestment;
 
     @JsonProperty("duration")
     private Integer duration;
 
     @JsonProperty("minimumInvestmentAmount")
-    private Double minimumInvestmentAmount;
+    private BigDecimal minimumInvestmentAmount;
 
     @JsonProperty("maximumInvestmentAmount")
-    private Double maximumInvestmentAmount;
+    private BigDecimal maximumInvestmentAmount;
 
     @JsonProperty("maximumInvestmentAmountPerInvestor")
-    private Double maximumInvestmentAmountPerInvestor;
+    private BigDecimal maximumInvestmentAmountPerInvestor;
 
     @JsonProperty("version")
     private Long version;

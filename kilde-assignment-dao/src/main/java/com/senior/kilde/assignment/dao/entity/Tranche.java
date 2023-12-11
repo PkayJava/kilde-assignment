@@ -27,19 +27,19 @@ public class Tranche implements Serializable, Cloneable {
     private Float annualInterest;
 
     @Column(name = "amount_available_for_investment")
-    private Double amountAvailableForInvestment;
+    private BigDecimal amountAvailableForInvestment;
 
     @Column(name = "duration")
     private Integer duration;
 
     @Column(name = "minimum_investment_amount")
-    private Double minimumInvestmentAmount;
+    private BigDecimal minimumInvestmentAmount;
 
     @Column(name = "maximum_investment_amount")
-    private Double maximumInvestmentAmount;
+    private BigDecimal maximumInvestmentAmount;
 
     @Column(name = "maximum_investment_amount_per_investor")
-    private Double maximumInvestmentAmountPerInvestor;
+    private BigDecimal maximumInvestmentAmountPerInvestor;
 
     @Version
     @Column(name = "version")
