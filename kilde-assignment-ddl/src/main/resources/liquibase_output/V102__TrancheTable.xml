@@ -26,6 +26,9 @@
             <column name="annual_interest" type="DECIMAL(8,4)">
                 <constraints notNullConstraintName="notnull_key_39" nullable="false"/>
             </column>
+            <column defaultValueNumeric="1" name="version" type="INT(11)">
+                <constraints notNullConstraintName="notnull_key_40" nullable="false"/>
+            </column>
         </createTable>
 
     </changeSet>

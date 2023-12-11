@@ -94,8 +94,8 @@ public class InvestorController {
 
         InvestorDetailResponse response = new InvestorDetailResponse();
         response.setId(investor.getId());
-        response.setName(response.getName());
-        response.setVersion(response.getVersion());
+        response.setName(investor.getName());
+        response.setVersion(investor.getVersion());
 
         return ResponseEntity.ok(response);
     }
@@ -119,11 +119,11 @@ public class InvestorController {
         investor = (Investor) investor.clone();
         investor.setName(request.getName());
         investor.setVersion(request.getVersion());
-        this.investorRepository.save(investor);
+        investor = this.investorRepository.save(investor);
 
         InvestorUpdateResponse response = new InvestorUpdateResponse();
         response.setName(request.getName());
-        response.setVersion(request.getVersion());
+        response.setVersion(investor.getVersion() + 1);
 
         return ResponseEntity.ok(response);
     }

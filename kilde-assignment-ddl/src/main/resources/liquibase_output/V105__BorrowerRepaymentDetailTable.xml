@@ -3,16 +3,16 @@
 
         <createTable tableName="tbl_borrower_repayment_detail">
             <column name="borrower_repayment_detail_id" type="VARCHAR(36)">
-                <constraints notNullConstraintName="notnull_key_51" nullable="false" primaryKey="true" primaryKeyName="primary_key_13"/>
+                <constraints notNullConstraintName="notnull_key_50" nullable="false" primaryKey="true" primaryKeyName="primary_key_13"/>
             </column>
             <column name="borrower_repayment_id" type="VARCHAR(36)">
-                <constraints notNullConstraintName="notnull_key_52" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_51" nullable="false"/>
             </column>
             <column name="amount" type="DECIMAL(20,4)">
-                <constraints notNullConstraintName="notnull_key_53" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_52" nullable="false"/>
             </column>
             <column name="month" type="INT">
-                <constraints notNullConstraintName="notnull_key_54" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_53" nullable="false"/>
             </column>
         </createTable>
 

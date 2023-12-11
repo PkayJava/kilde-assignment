@@ -4,32 +4,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
-public class TrancheDto implements Serializable {
-
-    @JsonProperty("id")
-    private String id;
+public class TrancheCreateRequest {
 
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("annualInterest")
-    private Float annualInterest;
-
-    @JsonProperty("amountAvailableForInvestment")
-    private Double amountAvailableForInvestment;
+    @JsonProperty("annualInterestRate")
+    private Float annualInterestRate;
 
     @JsonProperty("duration")
     private Integer duration;
 
+    @JsonProperty("amountAvailableForInvestment")
+    private Double amountAvailableForInvestment;
+
     @JsonProperty("minimumInvestmentAmount")
     private Double minimumInvestmentAmount;
-
-    @JsonProperty("maximumInvestmentAmount")
-    private Double maximumInvestmentAmount;
 
     @JsonProperty("maximumInvestmentAmountPerInvestor")
     private Double maximumInvestmentAmountPerInvestor;

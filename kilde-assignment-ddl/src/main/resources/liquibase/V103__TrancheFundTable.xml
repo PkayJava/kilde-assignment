@@ -4,29 +4,17 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
     <changeSet author="Senior Cyber" id="">
 
-        <createTable tableName="tbl_tranche">
-            <column name="tranche_id" type="VARCHAR(36)">
+        <createTable tableName="tbl_tranche_fund">
+            <column name="tranche_fund_id" type="VARCHAR(36)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" type="VARCHAR(100)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="amount_available_for_investment" type="DECIMAL(20,4)">
+            <column name="tranche_id" type="VARCHAR(36)">
                 <constraints nullable="false"/>
             </column>
-            <column name="duration" type="INT">
+            <column name="investor_id" type="VARCHAR(36)">
                 <constraints nullable="false"/>
             </column>
-            <column name="minimum_investment_amount" type="DECIMAL(20,4)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="maximum_investment_amount" type="DECIMAL(20,4)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="maximum_investment_amount_per_investor" type="DECIMAL(20,4)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="annual_interest" type="DECIMAL(8,4)">
+            <column name="fund_amount" type="DECIMAL(20,4)">
                 <constraints nullable="false"/>
             </column>
             <column name="version" type="INT(11)" defaultValueNumeric="1">

@@ -91,8 +91,8 @@ public class BorrowerController {
 
         BorrowerDetailResponse response = new BorrowerDetailResponse();
         response.setId(borrower.getId());
-        response.setName(response.getName());
-        response.setVersion(response.getVersion());
+        response.setName(borrower.getName());
+        response.setVersion(borrower.getVersion());
 
         return ResponseEntity.ok(response);
     }
@@ -117,15 +117,11 @@ public class BorrowerController {
         borrower.setName(request.getName());
         borrower.setVersion(request.getVersion());
 
-        try {
-            this.borrowerRepository.save(borrower);
-        } catch (Throwable e) {
-            throw e;
-        }
+        this.borrowerRepository.save(borrower);
 
         BorrowerUpdateResponse response = new BorrowerUpdateResponse();
         response.setName(request.getName());
-        response.setVersion(request.getVersion());
+        response.setVersion(borrower.getVersion() + 1);
 
         return ResponseEntity.ok(response);
     }

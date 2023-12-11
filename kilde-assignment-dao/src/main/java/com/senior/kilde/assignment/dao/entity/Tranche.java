@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Table(name = "tbl_tranche")
 @Getter
 @Setter
-public class Tranche implements Serializable {
+public class Tranche implements Serializable, Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -40,5 +40,14 @@ public class Tranche implements Serializable {
 
     @Column(name = "maximum_investment_amount_per_investor")
     private Double maximumInvestmentAmountPerInvestor;
+
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
 }

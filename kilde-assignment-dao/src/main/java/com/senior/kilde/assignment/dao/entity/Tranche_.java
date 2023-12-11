@@ -14,5 +14,6 @@ public abstract class Tranche_ {
     public static volatile SingularAttribute<Tranche, Double> minimumInvestmentAmount;
     public static volatile SingularAttribute<Tranche, Double> maximumInvestmentAmount;
     public static volatile SingularAttribute<Tranche, Double> maximumInvestmentAmountPerInvestor;
+    public static volatile SingularAttribute<Tranche, Long> version;
 
 }
