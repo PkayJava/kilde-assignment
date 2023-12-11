@@ -3,6 +3,7 @@ package com.senior.kilde.assignment.api.controller;
 import com.senior.kilde.assignment.api.dto.*;
 import com.senior.kilde.assignment.dao.entity.Borrower;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepository;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -115,7 +116,12 @@ public class BorrowerController {
         borrower = (Borrower) borrower.clone();
         borrower.setName(request.getName());
         borrower.setVersion(request.getVersion());
-        this.borrowerRepository.save(borrower);
+
+        try {
+            this.borrowerRepository.save(borrower);
+        } catch (Throwable e) {
+            throw e;
+        }
 
         BorrowerUpdateResponse response = new BorrowerUpdateResponse();
         response.setName(request.getName());
