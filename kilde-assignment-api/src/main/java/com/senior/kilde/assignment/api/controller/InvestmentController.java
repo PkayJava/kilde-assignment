@@ -2,12 +2,11 @@ package com.senior.kilde.assignment.api.controller;
 
 import com.senior.kilde.assignment.api.dto.InvestmentInvestRequest;
 import com.senior.kilde.assignment.api.dto.InvestmentInvestResponse;
+import com.senior.kilde.assignment.dao.entity.Account;
 import com.senior.kilde.assignment.dao.entity.Investor;
 import com.senior.kilde.assignment.dao.entity.Tranche;
 import com.senior.kilde.assignment.dao.entity.TrancheFund;
-import com.senior.kilde.assignment.dao.repository.InvestorRepository;
-import com.senior.kilde.assignment.dao.repository.TrancheFundRepository;
-import com.senior.kilde.assignment.dao.repository.TrancheRepository;
+import com.senior.kilde.assignment.dao.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -27,6 +26,7 @@ public class InvestmentController {
 
     public static final String BASE = "/investment";
     public static final String INVEST = "/invest";
+    public static final String BORROW = "/borrow";
 
     private final InvestorRepository investorRepository;
 
@@ -34,14 +34,22 @@ public class InvestmentController {
 
     private final TrancheFundRepository trancheFundRepository;
 
+    private final AccountRepository accountRepository;
+
+    private final BorrowerRepaymentRepository borrowerRepaymentRepository;
+
     public InvestmentController(
             InvestorRepository investorRepository,
             TrancheRepository trancheRepository,
-            TrancheFundRepository trancheFundRepository
+            TrancheFundRepository trancheFundRepository,
+            BorrowerRepaymentRepository borrowerRepaymentRepository,
+            AccountRepository accountRepository
     ) {
         this.investorRepository = investorRepository;
         this.trancheRepository = trancheRepository;
         this.trancheFundRepository = trancheFundRepository;
+        this.accountRepository = accountRepository;
+        this.borrowerRepaymentRepository = borrowerRepaymentRepository;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
@@ -62,9 +70,24 @@ public class InvestmentController {
         Optional<Investor> optionalInvestor = this.investorRepository.findByName(request.getInvestorName());
         Investor investor = optionalInvestor.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "investorName is not found"));
 
-        boolean existed = this.trancheFundRepository.existsByTrancheAndInvestor(tranche, investor);
-        if (existed) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, request.getInvestorName() + " already invested in " + request.getTrancheName());
+        {
+            boolean existed = this.trancheFundRepository.existsByTrancheAndInvestor(tranche, investor);
+            if (existed) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, request.getInvestorName() + " already invested in " + request.getTrancheName());
+            }
+        }
+
+        {
+            boolean existed = this.borrowerRepaymentRepository.existsByTranche(tranche);
+            if (existed) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, request.getTrancheName() + " already in progress or completed");
+            }
+        }
+
+        Account account = this.accountRepository.findById(investor.getAccount().getId()).orElseThrow();
+        account = (Account) account.clone();
+        if (account.getBalance() < request.getAmount()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "insufficient balance");
         }
 
         Double limit = tranche.getMaximumInvestmentAmountPerInvestor();
@@ -80,6 +103,9 @@ public class InvestmentController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "exceed minimum investment amount, currently is at least " + tranche.getMinimumInvestmentAmount());
         }
 
+        account.setBalance(account.getBalance() - request.getAmount());
+        this.accountRepository.save(account);
+
         tranche.setMaximumInvestmentAmount(tranche.getMaximumInvestmentAmount() + request.getAmount());
         this.trancheRepository.save(tranche);
 
@@ -89,6 +115,18 @@ public class InvestmentController {
         trancheFund.setInvestor(investor);
         this.trancheFundRepository.save(trancheFund);
 
+        InvestmentInvestResponse response = new InvestmentInvestResponse();
+        response.setMessage("mess");
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @RequestMapping(path = BORROW, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<InvestmentInvestResponse> investmentBorrow(
+            RequestEntity<InvestmentInvestRequest> httpRequest
+    ) throws CloneNotSupportedException {
+        // TODO : create a borrow repayment
         InvestmentInvestResponse response = new InvestmentInvestResponse();
         response.setMessage("mess");
 

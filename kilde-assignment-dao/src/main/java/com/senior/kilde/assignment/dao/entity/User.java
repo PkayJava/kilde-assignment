@@ -12,7 +12,7 @@ import java.util.Map;
 @Table(name = "tbl_user")
 @Setter
 @Getter
-public class User implements Serializable {
+public class User implements Serializable, Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -66,5 +66,10 @@ public class User implements Serializable {
     )
     @MapKeyColumn(name = "deny_role_id")
     private Map<String, Role> denyRoles;
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
 }

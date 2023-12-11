@@ -1,12 +1,17 @@
 package com.senior.kilde.assignment.api.controller;
 
 import com.senior.kilde.assignment.api.dto.*;
+import com.senior.kilde.assignment.dao.entity.Account;
 import com.senior.kilde.assignment.dao.entity.Investor;
 import com.senior.kilde.assignment.dao.entity.Investor;
 import com.senior.kilde.assignment.dao.entity.Investor;
+import com.senior.kilde.assignment.dao.repository.AccountRepository;
 import com.senior.kilde.assignment.dao.repository.InvestorRepository;
 import com.senior.kilde.assignment.dao.repository.InvestorRepository;
 import com.senior.kilde.assignment.dao.repository.InvestorRepository;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,11 +38,18 @@ public class InvestorController {
     public static final String CREATE = "/create";
     public static final String DETAIL = "/detail";
     public static final String UPDATE = "/update";
+    public static final String DEPOSIT = "/deposit";
 
     private final InvestorRepository investorRepository;
 
-    public InvestorController(InvestorRepository investorRepository) {
+    private final AccountRepository accountRepository;
+
+    public InvestorController(
+            InvestorRepository investorRepository,
+            AccountRepository accountRepository
+    ) {
         this.investorRepository = investorRepository;
+        this.accountRepository = accountRepository;
     }
 
     @RequestMapping(path = LIST)
@@ -66,13 +79,23 @@ public class InvestorController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "name is required");
         }
 
+        if (request.getInitialBalanceAmount() == null || request.getInitialBalanceAmount() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "initialBalanceAmount is required or initialBalanceAmount is negative");
+        }
+
         boolean exists = investorRepository.existsByName(request.getName());
         if (exists) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "name is not available");
         }
 
+        Account account = new Account();
+        account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + RandomStringUtils.randomNumeric(6));
+        account.setBalance(request.getInitialBalanceAmount());
+        this.accountRepository.save(account);
+
         Investor investor = new Investor();
         investor.setName(request.getName());
+        investor.setAccount(account);
         investorRepository.save(investor);
 
         String currentPath = httpRequest.getUrl().toString();
@@ -82,6 +105,8 @@ public class InvestorController {
         InvestorCreateResponse response = new InvestorCreateResponse();
         response.setId(investor.getId());
         response.setName(investor.getName());
+        response.setAccountNo(account.getAccountNo());
+        response.setBalance(account.getBalance());
         response.setVersion(investor.getVersion());
 
         return ResponseEntity.created(URI.create(detailPath)).body(response);
@@ -124,6 +149,33 @@ public class InvestorController {
         InvestorUpdateResponse response = new InvestorUpdateResponse();
         response.setName(request.getName());
         response.setVersion(investor.getVersion() + 1);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @RequestMapping(path = DEPOSIT, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<InvestorDepositResponse> investorDeposit(RequestEntity<InvestorDepositRequest> httpRequest) throws CloneNotSupportedException {
+        InvestorDepositRequest request = httpRequest.getBody();
+
+        if (request.getAmount() == null || request.getAmount() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "amount is required or amount is not positive");
+        }
+
+        boolean exists = investorRepository.existsByName(request.getInvestorName());
+        if (exists) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "investorName is not found");
+        }
+
+        Optional<Investor> optionalInvestor = this.investorRepository.findByName(request.getInvestorName());
+        Investor investor = optionalInvestor.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        Account account = accountRepository.findById(investor.getAccount().getId()).orElseThrow();
+        account = (Account) account.clone();
+        account.setBalance(account.getBalance() + request.getAmount());
+        accountRepository.save(account);
+
+        InvestorDepositResponse response = new InvestorDepositResponse();
+        response.setAmount(account.getBalance());
 
         return ResponseEntity.ok(response);
     }

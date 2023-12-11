@@ -12,7 +12,7 @@ import java.util.Map;
 @Table(name = "tbl_group")
 @Getter
 @Setter
-public class Group implements Serializable {
+public class Group implements Serializable, Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -44,4 +44,8 @@ public class Group implements Serializable {
     @MapKeyColumn(name = "user_group_id")
     private Map<String, User> users;
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

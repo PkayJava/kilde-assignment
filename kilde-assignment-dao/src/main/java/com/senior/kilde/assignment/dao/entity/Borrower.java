@@ -22,6 +22,10 @@ public class Borrower implements Serializable, Cloneable {
     @Column(name = "name")
     private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    private Account account;
+
     @Version
     @Column(name = "version")
     private Long version;

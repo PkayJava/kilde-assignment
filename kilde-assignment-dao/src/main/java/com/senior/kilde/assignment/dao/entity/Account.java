@@ -8,27 +8,22 @@ import lombok.Setter;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tbl_tranche_fund")
+@Table(name = "tbl_account")
 @Getter
 @Setter
-public class TrancheFund implements Serializable, Cloneable {
+public class Account implements Serializable, Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "tranche_fund_id")
+    @Column(name = "account_id")
     @Setter(AccessLevel.NONE)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tranche_id", referencedColumnName = "tranche_id")
-    private Tranche tranche;
+    @Column(name = "account_no")
+    private String accountNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "investor_id", referencedColumnName = "investor_id")
-    private Investor investor;
-
-    @Column(name = "fund_amount")
-    private Double fundAmount;
+    @Column(name = "balance")
+    private Double balance;
 
     @Version
     @Column(name = "version")

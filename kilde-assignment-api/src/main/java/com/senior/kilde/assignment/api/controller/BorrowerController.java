@@ -1,9 +1,12 @@
 package com.senior.kilde.assignment.api.controller;
 
 import com.senior.kilde.assignment.api.dto.*;
+import com.senior.kilde.assignment.dao.entity.Account;
 import com.senior.kilde.assignment.dao.entity.Borrower;
+import com.senior.kilde.assignment.dao.repository.AccountRepository;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepository;
-import org.hibernate.StaleObjectStateException;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,11 +33,18 @@ public class BorrowerController {
     public static final String CREATE = "/create";
     public static final String DETAIL = "/detail";
     public static final String UPDATE = "/update";
+    public static final String DEPOSIT = "/deposit";
 
     private final BorrowerRepository borrowerRepository;
 
-    public BorrowerController(BorrowerRepository borrowerRepository) {
+    private final AccountRepository accountRepository;
+
+    public BorrowerController(
+            BorrowerRepository borrowerRepository,
+            AccountRepository accountRepository
+    ) {
         this.borrowerRepository = borrowerRepository;
+        this.accountRepository = accountRepository;
     }
 
     @RequestMapping(path = LIST)
@@ -68,7 +79,13 @@ public class BorrowerController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "name is not available");
         }
 
+        Account account = new Account();
+        account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + RandomStringUtils.randomNumeric(6));
+        account.setBalance(0D);
+        this.accountRepository.save(account);
+
         Borrower borrower = new Borrower();
+        borrower.setAccount(account);
         borrower.setName(request.getName());
         borrowerRepository.save(borrower);
 
@@ -79,6 +96,8 @@ public class BorrowerController {
         BorrowerCreateResponse response = new BorrowerCreateResponse();
         response.setId(borrower.getId());
         response.setName(borrower.getName());
+        response.setAccountNo(account.getAccountNo());
+        response.setBalance(0D);
         response.setVersion(borrower.getVersion());
 
         return ResponseEntity.created(URI.create(detailPath)).body(response);
@@ -122,6 +141,33 @@ public class BorrowerController {
         BorrowerUpdateResponse response = new BorrowerUpdateResponse();
         response.setName(request.getName());
         response.setVersion(borrower.getVersion() + 1);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @RequestMapping(path = DEPOSIT, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BorrowerDepositResponse> investorDeposit(RequestEntity<BorrowerDepositRequest> httpRequest) throws CloneNotSupportedException {
+        BorrowerDepositRequest request = httpRequest.getBody();
+
+        if (request.getAmount() == null || request.getAmount() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "amount is required or amount is not positive");
+        }
+
+        boolean exists = borrowerRepository.existsByName(request.getBorrowerName());
+        if (exists) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "borrowerName is not found");
+        }
+
+        Optional<Borrower> optionalBorrower = this.borrowerRepository.findByName(request.getBorrowerName());
+        Borrower borrower = optionalBorrower.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        Account account = accountRepository.findById(borrower.getAccount().getId()).orElseThrow();
+        account = (Account) account.clone();
+        account.setBalance(account.getBalance() + request.getAmount());
+        accountRepository.save(account);
+
+        BorrowerDepositResponse response = new BorrowerDepositResponse();
+        response.setBalance(account.getBalance());
 
         return ResponseEntity.ok(response);
     }

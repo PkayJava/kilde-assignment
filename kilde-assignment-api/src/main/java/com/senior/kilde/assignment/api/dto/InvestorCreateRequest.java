@@ -11,4 +11,7 @@ public class InvestorCreateRequest {
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("initialBalanceAmount")
+    private Double initialBalanceAmount;
+
 }

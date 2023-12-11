@@ -3,13 +3,16 @@
 
         <createTable tableName="tbl_borrower">
             <column name="borrower_id" type="VARCHAR(36)">
-                <constraints notNullConstraintName="notnull_key_29" nullable="false" primaryKey="true" primaryKeyName="primary_key_9"/>
+                <constraints notNullConstraintName="notnull_key_30" nullable="false" primaryKey="true" primaryKeyName="primary_key_9"/>
             </column>
             <column name="name" type="VARCHAR(100)">
-                <constraints notNullConstraintName="notnull_key_30" nullable="false" unique="true" uniqueConstraintName="unique_index_11"/>
+                <constraints notNullConstraintName="notnull_key_31" nullable="false" unique="true" uniqueConstraintName="unique_index_11"/>
+            </column>
+            <column name="account_id" type="VARCHAR(32)">
+                <constraints notNullConstraintName="notnull_key_32" nullable="false"/>
             </column>
             <column defaultValueNumeric="1" name="version" type="INT(11)">
-                <constraints notNullConstraintName="notnull_key_31" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_33" nullable="false"/>
             </column>
         </createTable>
 

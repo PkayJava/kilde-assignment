@@ -8,6 +8,7 @@ public abstract class Borrower_ {
 
     public static volatile SingularAttribute<Borrower, String> id;
     public static volatile SingularAttribute<Borrower, String> name;
+    public static volatile SingularAttribute<Borrower, Account> account;
     public static volatile SingularAttribute<Borrower, Long> version;
 
 }

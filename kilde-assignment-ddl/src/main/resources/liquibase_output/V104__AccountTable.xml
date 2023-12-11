@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+    <changeSet author="Senior Cyber" id="V104__AccountTable-1">
+
+        <createTable tableName="tbl_account">
+            <column name="account_id" type="VARCHAR(36)">
+                <constraints notNullConstraintName="notnull_key_48" nullable="false" primaryKey="true" primaryKeyName="primary_key_12"/>
+            </column>
+            <column name="account_no" type="VARCHAR(16)">
+                <constraints notNullConstraintName="notnull_key_49" nullable="false" unique="true" uniqueConstraintName="unique_index_13"/>
+            </column>
+            <column name="balance" type="VARCHAR(36)">
+                <constraints notNullConstraintName="notnull_key_50" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="version" type="INT(11)">
+                <constraints notNullConstraintName="notnull_key_51" nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>
