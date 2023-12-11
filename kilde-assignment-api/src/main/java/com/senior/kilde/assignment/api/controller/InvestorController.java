@@ -123,7 +123,7 @@ public class InvestorController {
 
         InvestorUpdateResponse response = new InvestorUpdateResponse();
         response.setName(request.getName());
-        response.setVersion(response.getVersion());
+        response.setVersion(request.getVersion());
 
         return ResponseEntity.ok(response);
     }

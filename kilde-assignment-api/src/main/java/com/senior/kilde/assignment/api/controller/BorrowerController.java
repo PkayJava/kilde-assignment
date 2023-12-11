@@ -119,7 +119,7 @@ public class BorrowerController {
 
         BorrowerUpdateResponse response = new BorrowerUpdateResponse();
         response.setName(request.getName());
-        response.setVersion(response.getVersion());
+        response.setVersion(request.getVersion());
 
         return ResponseEntity.ok(response);
     }
