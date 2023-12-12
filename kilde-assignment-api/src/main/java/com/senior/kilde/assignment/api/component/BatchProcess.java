@@ -33,6 +33,10 @@ public class BatchProcess {
         this.repaymentService = repaymentService;
     }
 
+    /**
+     * Daily at time 00
+     * @throws CloneNotSupportedException
+     */
     @Scheduled(cron = "0 0 0 * * *")
     public void borrowRepaymentCollector() throws CloneNotSupportedException {
         LocalDate today = LocalDate.now();
