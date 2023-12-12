@@ -1,10 +1,10 @@
 package com.senior.kilde.assignment.api.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.senior.kilde.assignment.api.dto.*;
 import com.senior.kilde.assignment.dao.entity.*;
 import com.senior.kilde.assignment.dao.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Optional;
-
 @RestController
 @RequestMapping(path = InfoController.BASE)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class InfoController {
 
     public static final String BASE = "/info";
@@ -38,20 +35,6 @@ public class InfoController {
     private final BorrowerRepaymentRepository borrowerRepaymentRepository;
 
     private final TrancheRepository trancheRepository;
-
-    public InfoController(
-            InvestorRepository investorRepository,
-            AccountRepository accountRepository,
-            BorrowerRepository borrowerRepository,
-            BorrowerRepaymentRepository borrowerRepaymentRepository,
-            TrancheRepository trancheRepository
-    ) {
-        this.investorRepository = investorRepository;
-        this.accountRepository = accountRepository;
-        this.borrowerRepository = borrowerRepository;
-        this.borrowerRepaymentRepository = borrowerRepaymentRepository;
-        this.trancheRepository = trancheRepository;
-    }
 
     @RequestMapping(path = TRANCHE + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InfoTrancheResponse> infoTranche(@PathVariable("id") String id) {

@@ -8,13 +8,7 @@ import lombok.Setter;
 @Getter
 public class InvestmentBorrowResponse {
 
-    @JsonProperty("trancheName")
-    private String trancheName;
-
-    @JsonProperty("borrowerName")
-    private String borrowerName;
-
-    @JsonProperty("amount")
-    private Double amount;
+    @JsonProperty("message")
+    private String message;
 
 }

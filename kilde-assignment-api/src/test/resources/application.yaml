@@ -1,0 +1,26 @@
+server:
+  port: 8090
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # replace according to you ENV
+    url: 'jdbc:mysql://139.99.121.54:3306/kilde_assignment?autoReconnect=true&useSSL=false'
+    username: 'kilde_assignment'
+    password: 'kilde_assignment'
+  mvc:
+    servlet:
+      path: /api
+      load-on-startup: 1
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database: mysql
+    database-platform: com.senior.kilde.assignment.dao.dialect.MySQLDialect
+    open-in-view: false
+logging:
+  level:
+    web: info
+    sql: info
