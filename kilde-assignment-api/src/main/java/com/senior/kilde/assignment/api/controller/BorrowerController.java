@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,6 @@ public class BorrowerController {
     public static final String BASE = "/borrower";
     public static final String LIST = "/list";
     public static final String CREATE = "/create";
-    public static final String DETAIL = "/detail";
     public static final String UPDATE = "/update";
     public static final String DEPOSIT = "/deposit";
 
@@ -90,10 +88,6 @@ public class BorrowerController {
         borrower.setName(request.getName());
         borrowerRepository.save(borrower);
 
-        String currentPath = httpRequest.getUrl().toString();
-        String basePath = currentPath.substring(0, currentPath.length() - CREATE.length());
-        String detailPath = basePath + DETAIL + "/" + borrower.getId();
-
         BorrowerCreateResponse response = new BorrowerCreateResponse();
         response.setId(borrower.getId());
         response.setName(borrower.getName());
@@ -101,20 +95,7 @@ public class BorrowerController {
         response.setBalance(0D);
         response.setVersion(borrower.getVersion());
 
-        return ResponseEntity.created(URI.create(detailPath)).body(response);
-    }
-
-    @RequestMapping(path = DETAIL + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BorrowerDetailResponse> borrowerDetail(@PathVariable("id") String id) {
-        Optional<Borrower> optionalBorrower = this.borrowerRepository.findById(id);
-        Borrower borrower = optionalBorrower.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        BorrowerDetailResponse response = new BorrowerDetailResponse();
-        response.setId(borrower.getId());
-        response.setName(borrower.getName());
-        response.setVersion(borrower.getVersion());
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.created(null).body(response);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)

@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +30,6 @@ public class InvestorController {
     public static final String BASE = "/investor";
     public static final String LIST = "/list";
     public static final String CREATE = "/create";
-    public static final String DETAIL = "/detail";
     public static final String UPDATE = "/update";
     public static final String DEPOSIT = "/deposit";
 
@@ -93,10 +91,6 @@ public class InvestorController {
         investor.setAccount(account);
         investorRepository.save(investor);
 
-        String currentPath = httpRequest.getUrl().toString();
-        String basePath = currentPath.substring(0, currentPath.length() - CREATE.length());
-        String detailPath = basePath + DETAIL + "/" + investor.getId();
-
         InvestorCreateResponse response = new InvestorCreateResponse();
         response.setId(investor.getId());
         response.setName(investor.getName());
@@ -104,20 +98,7 @@ public class InvestorController {
         response.setBalance(account.getBalance());
         response.setVersion(investor.getVersion());
 
-        return ResponseEntity.created(URI.create(detailPath)).body(response);
-    }
-
-    @RequestMapping(path = DETAIL + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InvestorDetailResponse> investorDetail(@PathVariable("id") String id) {
-        Optional<Investor> optionalInvestor = this.investorRepository.findById(id);
-        Investor investor = optionalInvestor.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        InvestorDetailResponse response = new InvestorDetailResponse();
-        response.setId(investor.getId());
-        response.setName(investor.getName());
-        response.setVersion(investor.getVersion());
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.created(null).body(response);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)

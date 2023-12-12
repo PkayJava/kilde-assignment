@@ -1,6 +1,9 @@
 package com.senior.kilde.assignment.api.controller;
 
-import com.senior.kilde.assignment.api.dto.*;
+import com.senior.kilde.assignment.api.dto.TrancheCreateRequest;
+import com.senior.kilde.assignment.api.dto.TrancheCreateResponse;
+import com.senior.kilde.assignment.api.dto.TrancheItemDto;
+import com.senior.kilde.assignment.api.dto.TrancheListResponse;
 import com.senior.kilde.assignment.dao.entity.Tranche;
 import com.senior.kilde.assignment.dao.enums.TrancheStatus;
 import com.senior.kilde.assignment.dao.repository.TrancheRepository;
@@ -10,16 +13,13 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = TrancheController.BASE)
@@ -28,7 +28,6 @@ public class TrancheController {
     public static final String BASE = "/tranche";
     public static final String LIST = "/list";
     public static final String CREATE = "/create";
-    public static final String DETAIL = "/detail";
     public static final String UPDATE = "/update";
 
     private final TrancheRepository trancheRepository;
@@ -110,35 +109,12 @@ public class TrancheController {
 
         this.trancheRepository.save(tranche);
 
-        String currentPath = httpRequest.getUrl().toString();
-        String basePath = currentPath.substring(0, currentPath.length() - CREATE.length());
-        String detailPath = basePath + DETAIL + "/" + tranche.getId();
-
         TrancheCreateResponse response = new TrancheCreateResponse();
         response.setId(tranche.getId());
         response.setName(tranche.getName());
         response.setVersion(tranche.getVersion());
 
-        return ResponseEntity.created(URI.create(detailPath)).body(response);
-    }
-
-    @RequestMapping(path = DETAIL + "/{id}")
-    public ResponseEntity<TrancheDetailResponse> trancheDetail(@PathVariable("id") String id) {
-        Optional<Tranche> optionalTranche = this.trancheRepository.findById(id);
-        Tranche tranche = optionalTranche.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        TrancheDetailResponse dto = new TrancheDetailResponse();
-        dto.setId(tranche.getId());
-        dto.setName(tranche.getName());
-        dto.setDuration(tranche.getDuration());
-        dto.setAnnualInterest(tranche.getAnnualInterest());
-        dto.setMaximumInvestmentAmount(tranche.getMaximumInvestmentAmount());
-        dto.setMinimumInvestmentAmount(tranche.getMinimumInvestmentAmount());
-        dto.setAmountAvailableForInvestment(tranche.getAmountAvailableForInvestment());
-        dto.setMaximumInvestmentAmountPerInvestor(tranche.getMaximumInvestmentAmountPerInvestor());
-        dto.setVersion(tranche.getVersion());
-
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.created(null).body(response);
     }
 
 }

@@ -7,15 +7,10 @@ import com.senior.kilde.assignment.dao.enums.TrancheStatus;
 import com.senior.kilde.assignment.dao.repository.AccountRepository;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepaymentRepository;
 import com.senior.kilde.assignment.dao.repository.TrancheRepository;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class RepaymentService {
