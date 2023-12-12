@@ -3,34 +3,55 @@
 
         <createTable tableName="tbl_borrower_repayment">
             <column name="borrower_repayment_id" type="VARCHAR(36)">
-                <constraints notNullConstraintName="notnull_key_52" nullable="false" primaryKey="true" primaryKeyName="primary_key_13"/>
+                <constraints notNullConstraintName="notnull_key_53" nullable="false" primaryKey="true" primaryKeyName="primary_key_13"/>
             </column>
             <column name="tranche_id" type="VARCHAR(36)">
-                <constraints notNullConstraintName="notnull_key_53" nullable="false"/>
-            </column>
-            <column name="borrower_id" type="VARCHAR(36)">
                 <constraints notNullConstraintName="notnull_key_54" nullable="false"/>
             </column>
-            <column name="loan_amount" type="DECIMAL(20,4)">
+            <column name="borrower_id" type="VARCHAR(36)">
                 <constraints notNullConstraintName="notnull_key_55" nullable="false"/>
             </column>
             <column name="account_id" type="VARCHAR(36)">
                 <constraints notNullConstraintName="notnull_key_56" nullable="false"/>
             </column>
-            <column name="month_payment_count" type="INT">
+            <column name="loan_amount" type="DECIMAL(20,4)">
                 <constraints notNullConstraintName="notnull_key_57" nullable="false"/>
             </column>
-            <column name="next_payment_date" type="DATE">
-                <constraints notNullConstraintName="notnull_key_58" nullable="true"/>
+            <column name="loan_duration" type="INT">
+                <constraints notNullConstraintName="notnull_key_58" nullable="false"/>
+            </column>
+            <column name="month_payment_count" type="INT">
+                <constraints notNullConstraintName="notnull_key_59" nullable="false"/>
+            </column>
+            <column name="origin_payment_day" type="INT">
+                <constraints notNullConstraintName="notnull_key_60" nullable="false"/>
+            </column>
+            <column name="created_date" type="DATE">
+                <constraints notNullConstraintName="notnull_key_61" nullable="true"/>
+            </column>
+            <column name="borrower_fee_per_month" type="DECIMAL(20,4)">
+                <constraints notNullConstraintName="notnull_key_62" nullable="false"/>
+            </column>
+            <column name="interest_per_month" type="DECIMAL(20,4)">
+                <constraints notNullConstraintName="notnull_key_63" nullable="false"/>
+            </column>
+            <column name="total_outstanding_amount" type="DECIMAL(20,4)">
+                <constraints notNullConstraintName="notnull_key_64" nullable="false"/>
+            </column>
+            <column name="total_repayment_amount" type="DECIMAL(20,4)">
+                <constraints notNullConstraintName="notnull_key_65" nullable="false"/>
             </column>
             <column name="next_payment_back_date" type="DATE">
-                <constraints notNullConstraintName="notnull_key_59" nullable="true"/>
+                <constraints notNullConstraintName="notnull_key_66" nullable="true"/>
+            </column>
+            <column name="next_payment_date" type="DATE">
+                <constraints notNullConstraintName="notnull_key_67" nullable="true"/>
             </column>
             <column name="next_payment_amount" type="DECIMAL(20,4)">
-                <constraints notNullConstraintName="notnull_key_60" nullable="true"/>
+                <constraints notNullConstraintName="notnull_key_68" nullable="true"/>
             </column>
-            <column name="duration" type="INT">
-                <constraints notNullConstraintName="notnull_key_61" nullable="false"/>
+            <column defaultValueNumeric="1" name="version" type="INT(11)">
+                <constraints notNullConstraintName="notnull_key_69" nullable="false"/>
             </column>
         </createTable>
 

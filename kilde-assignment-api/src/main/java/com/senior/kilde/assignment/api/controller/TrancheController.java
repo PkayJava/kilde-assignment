@@ -2,6 +2,7 @@ package com.senior.kilde.assignment.api.controller;
 
 import com.senior.kilde.assignment.api.dto.*;
 import com.senior.kilde.assignment.dao.entity.Tranche;
+import com.senior.kilde.assignment.dao.enums.TrancheStatus;
 import com.senior.kilde.assignment.dao.repository.TrancheRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -105,6 +106,7 @@ public class TrancheController {
         tranche.setMinimumInvestmentAmount(request.getMinimumInvestmentAmount());
         tranche.setMaximumInvestmentAmount(BigDecimal.valueOf(0D));
         tranche.setMaximumInvestmentAmountPerInvestor(request.getMaximumInvestmentAmountPerInvestor());
+        tranche.setStatus(TrancheStatus.Available);
 
         this.trancheRepository.save(tranche);
 

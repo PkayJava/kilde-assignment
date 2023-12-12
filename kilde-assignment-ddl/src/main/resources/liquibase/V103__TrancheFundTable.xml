@@ -22,5 +22,7 @@
             </column>
         </createTable>
 
+        <addUniqueConstraint columnNames="tranche_id,investor_id" tableName="tbl_tranche_fund"/>
+
     </changeSet>
 </databaseChangeLog>

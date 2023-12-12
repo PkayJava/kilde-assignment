@@ -29,18 +29,36 @@ public class BorrowerRepayment implements Serializable, Cloneable {
     @JoinColumn(name = "borrower_id", referencedColumnName = "borrower_id")
     private Borrower borrower;
 
-    @Column(name = "loan_amount")
-    private BigDecimal loanAmount;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
 
-    @Column(name = "duration")
-    private Integer duration;
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @Column(name = "loan_amount")
+    private BigDecimal loanAmount;
+
+    @Column(name = "loan_duration")
+    private Integer loanDuration;
 
     @Column(name = "month_payment_count")
     private Integer monthPaymentCount;
+
+    @Column(name = "origin_payment_day")
+    private Integer originPaymentDay;
+
+    @Column(name = "borrower_fee_per_month")
+    private BigDecimal borrowerFeePerMonth;
+
+    @Column(name = "interest_per_month")
+    private BigDecimal interestPerMonth;
+
+    @Column(name = "total_outstanding_amount")
+    private BigDecimal totalOutstandingAmount;
+
+    @Column(name = "total_repayment_amount")
+    private BigDecimal totalRepaymentAmount;
 
     @Column(name = "next_payment_date")
     private Date nextPaymentDate;

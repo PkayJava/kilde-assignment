@@ -1,5 +1,6 @@
 package com.senior.kilde.assignment.dao.entity;
 
+import com.senior.kilde.assignment.dao.enums.TrancheStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,6 +41,10 @@ public class Tranche implements Serializable, Cloneable {
 
     @Column(name = "maximum_investment_amount_per_investor")
     private BigDecimal maximumInvestmentAmountPerInvestor;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private TrancheStatus status;
 
     @Version
     @Column(name = "version")
