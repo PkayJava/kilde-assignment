@@ -59,7 +59,7 @@ public class RepaymentService {
             if (repayment.getMonthPaymentCount() == (repayment.getLoanDuration() - 1)) {
                 // last month
                 repayment.setNextPaymentAmount(repayment.getNextPaymentAmount().add(repayment.getLoanAmount()));
-            } else if (repayment.getMonthPaymentCount() == repayment.getLoanDuration()) {
+            } else if (repayment.getMonthPaymentCount().equals(repayment.getLoanDuration())) {
                 repayment.setNextPaymentAmount(null);
                 repayment.setNextPaymentDate(null);
                 Tranche tranche = trancheRepository.findById(repayment.getTranche().getId()).orElseThrow();
