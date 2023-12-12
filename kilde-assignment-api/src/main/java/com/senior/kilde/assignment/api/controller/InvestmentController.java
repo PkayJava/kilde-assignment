@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Optional;
 
@@ -32,6 +33,7 @@ public class InvestmentController {
     public static final String BASE = "/investment";
     public static final String INVEST = "/invest";
     public static final String BORROW = "/borrow";
+    public static final String PLATFORM_ACCOUNT_NO = "0000-00-00-00000";
 
     private final InvestorRepository investorRepository;
 
@@ -105,7 +107,10 @@ public class InvestmentController {
         account.setBalance(account.getBalance().subtract(request.getAmount()));
         this.accountRepository.save(account);
 
-        tranche.setMaximumInvestmentAmount(tranche.getMaximumInvestmentAmount().add(request.getAmount()));
+        BigDecimal investorFee = request.getAmount().multiply(BigDecimal.valueOf(0.02d));
+        BigDecimal investmentAmount = request.getAmount().subtract(investorFee);
+
+        tranche.setMaximumInvestmentAmount(tranche.getMaximumInvestmentAmount().add(investmentAmount));
         this.trancheRepository.save(tranche);
 
         TrancheFund trancheFund = new TrancheFund();
@@ -113,6 +118,9 @@ public class InvestmentController {
         trancheFund.setTranche(tranche);
         trancheFund.setInvestor(investor);
         this.trancheFundRepository.save(trancheFund);
+
+        Account platformAccount = this.accountRepository.findByAccountNo(PLATFORM_ACCOUNT_NO).orElseThrow();
+        platformAccount.setBalance(platformAccount.getBalance().add(investorFee));
 
         // TODO : response detail of that tranche
         InvestmentInvestResponse response = new InvestmentInvestResponse();
@@ -159,7 +167,7 @@ public class InvestmentController {
         borrowerAccount = (Account) borrowerAccount.clone();
 
         BigDecimal interestRatePerYear = BigDecimal.valueOf(tranche.getAnnualInterest() / 100f);
-        BigDecimal interestRatePerMonth = interestRatePerYear.divide(BigDecimal.valueOf(12d));
+        BigDecimal interestRatePerMonth = interestRatePerYear.divide(BigDecimal.valueOf(12d), 4, RoundingMode.HALF_UP);
         BigDecimal borrowerFeePerMonth = amount.multiply(BigDecimal.valueOf(0.02f));
         BigDecimal interestPerMonth = amount.multiply(interestRatePerMonth);
 
@@ -167,7 +175,7 @@ public class InvestmentController {
         this.trancheRepository.save(tranche);
 
         Account account = new Account();
-        account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + RandomStringUtils.randomNumeric(6));
+        account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + "-" + RandomStringUtils.randomNumeric(5));
         account.setBalance(BigDecimal.valueOf(0D));
         this.accountRepository.save(account);
 

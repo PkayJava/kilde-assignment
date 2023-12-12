@@ -81,7 +81,7 @@ public class BorrowerController {
         }
 
         Account account = new Account();
-        account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + RandomStringUtils.randomNumeric(6));
+        account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + "-" + RandomStringUtils.randomNumeric(5));
         account.setBalance(BigDecimal.valueOf(0D));
         this.accountRepository.save(account);
 

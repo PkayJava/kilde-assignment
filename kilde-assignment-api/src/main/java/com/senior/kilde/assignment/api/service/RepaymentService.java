@@ -2,8 +2,11 @@ package com.senior.kilde.assignment.api.service;
 
 import com.senior.kilde.assignment.dao.entity.Account;
 import com.senior.kilde.assignment.dao.entity.BorrowerRepayment;
+import com.senior.kilde.assignment.dao.entity.Tranche;
+import com.senior.kilde.assignment.dao.enums.TrancheStatus;
 import com.senior.kilde.assignment.dao.repository.AccountRepository;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepaymentRepository;
+import com.senior.kilde.assignment.dao.repository.TrancheRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
@@ -21,9 +24,12 @@ public class RepaymentService {
 
     private final AccountRepository accountRepository;
 
-    public RepaymentService(BorrowerRepaymentRepository borrowerRepaymentRepository, AccountRepository accountRepository) {
+    private final TrancheRepository trancheRepository;
+
+    public RepaymentService(BorrowerRepaymentRepository borrowerRepaymentRepository, AccountRepository accountRepository, TrancheRepository trancheRepository) {
         this.borrowerRepaymentRepository = borrowerRepaymentRepository;
         this.accountRepository = accountRepository;
+        this.trancheRepository = trancheRepository;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
@@ -53,6 +59,13 @@ public class RepaymentService {
             if (repayment.getMonthPaymentCount() == (repayment.getLoanDuration() - 1)) {
                 // last month
                 repayment.setNextPaymentAmount(repayment.getNextPaymentAmount().add(repayment.getLoanAmount()));
+            } else if (repayment.getMonthPaymentCount() == repayment.getLoanDuration()) {
+                repayment.setNextPaymentAmount(null);
+                repayment.setNextPaymentDate(null);
+                Tranche tranche = trancheRepository.findById(repayment.getTranche().getId()).orElseThrow();
+                tranche = (Tranche) tranche.clone();
+                tranche.setStatus(TrancheStatus.Available);
+                trancheRepository.save(tranche);
             }
             this.borrowerRepaymentRepository.save(repayment);
         } else {

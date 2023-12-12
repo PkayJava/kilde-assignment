@@ -84,7 +84,7 @@ public class InvestorController {
         }
 
         Account account = new Account();
-        account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + RandomStringUtils.randomNumeric(6));
+        account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + "-" + RandomStringUtils.randomNumeric(5));
         account.setBalance(request.getInitialBalanceAmount());
         this.accountRepository.save(account);
 
