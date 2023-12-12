@@ -19,6 +19,7 @@ repositories {
 
 dependencies {
     implementation project(":kilde-assignment-dao")
+    implementation project(":kilde-assignment-scommon")
 
     implementation "com.senior.cyber.frmk:common:1.0.0"
     implementation "com.senior.cyber.frmk:jdbc-query:1.0.0"

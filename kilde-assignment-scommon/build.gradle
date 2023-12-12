@@ -16,9 +16,14 @@ repositories {
 }
 
 dependencies {
+    implementation project(":kilde-assignment-dao")
+
+    implementation "org.springframework.boot:spring-boot-starter-json:${spring_boot}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${spring_boot}"
     implementation "org.springframework.boot:spring-boot-starter-data-jdbc:${spring_boot}"
     implementation "org.springframework.boot:spring-boot-starter-security:${spring_boot}"
     implementation "org.apache.commons:commons-lang3:${commons_lang3}"
+    implementation "joda-time:joda-time:${joda_time}"
 
     compileOnly "org.projectlombok:lombok:${lombok}"
     annotationProcessor "org.projectlombok:lombok:${lombok}"

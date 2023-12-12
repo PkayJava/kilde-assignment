@@ -22,6 +22,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.RangeValidator;
 import org.springframework.context.ApplicationContext;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 
@@ -91,12 +92,12 @@ public class TrancheModifyPageInfoTab extends ContentPanel {
         this.name_value = entity.getName();
         this.duration_value = entity.getDuration();
 
-        this.amount_available_for_investment_value = entity.getAmountAvailableForInvestment();
+        this.amount_available_for_investment_value = entity.getAmountAvailableForInvestment().doubleValue();
         this.annual_interest_value = entity.getAnnualInterest();
 
-        this.minimum_investment_amount_value = entity.getMinimumInvestmentAmount();
-        this.maximum_investment_amount_value = entity.getMaximumInvestmentAmount();
-        this.maximum_investment_amount_per_investor_value = entity.getMaximumInvestmentAmountPerInvestor();
+        this.minimum_investment_amount_value = entity.getMinimumInvestmentAmount().doubleValue();
+        this.maximum_investment_amount_value = entity.getMaximumInvestmentAmount().doubleValue();
+        this.maximum_investment_amount_per_investor_value = entity.getMaximumInvestmentAmountPerInvestor().doubleValue();
     }
 
     @Override
@@ -208,10 +209,10 @@ public class TrancheModifyPageInfoTab extends ContentPanel {
         entity.setName(this.name_value);
         entity.setDuration(this.duration_value);
         entity.setAnnualInterest(this.annual_interest_value);
-        entity.setMinimumInvestmentAmount(this.minimum_investment_amount_value);
-        entity.setMaximumInvestmentAmount(this.maximum_investment_amount_value);
-        entity.setMaximumInvestmentAmountPerInvestor(this.maximum_investment_amount_value);
-        entity.setAmountAvailableForInvestment(this.amount_available_for_investment_value);
+        entity.setMinimumInvestmentAmount(BigDecimal.valueOf(this.minimum_investment_amount_value));
+        entity.setMaximumInvestmentAmount(BigDecimal.valueOf(this.maximum_investment_amount_value));
+        entity.setMaximumInvestmentAmountPerInvestor(BigDecimal.valueOf(this.maximum_investment_amount_value));
+        entity.setAmountAvailableForInvestment(BigDecimal.valueOf(this.amount_available_for_investment_value));
         repository.save(entity);
 
         setResponsePage(TrancheBrowsePage.class);

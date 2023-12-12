@@ -17,10 +17,11 @@ import com.senior.cyber.frmk.common.wicket.layout.UIColumn;
 import com.senior.cyber.frmk.common.wicket.layout.UIContainer;
 import com.senior.cyber.frmk.common.wicket.layout.UIRow;
 import com.senior.cyber.frmk.common.wicket.markup.html.panel.ContainerFeedbackBehavior;
-import com.senior.kilde.assignment.dao.entity.Investor;
+import com.senior.kilde.assignment.dao.entity.Account_;
 import com.senior.kilde.assignment.dao.entity.Investor_;
 import com.senior.kilde.assignment.dao.entity.Role;
-import com.senior.kilde.assignment.dao.repository.InvestorRepository;
+import com.senior.kilde.assignment.scommon.dto.InvestorCreateRequest;
+import com.senior.kilde.assignment.scommon.service.InvestorService;
 import com.senior.kilde.assignment.web.data.MySqlDataProvider;
 import com.senior.kilde.assignment.web.pages.MasterPage;
 import com.senior.kilde.assignment.web.validator.InvestorNameValidator;
@@ -37,6 +38,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.springframework.context.ApplicationContext;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,7 @@ public class InvestorBrowsePage extends MasterPage {
         super.onInitData();
 
         this.investor_browse_provider = new MySqlDataProvider(Sql.table(Investor_.class));
+        this.investor_browse_provider.applyJoin("account", "INNER JOIN " + Sql.table(Account_.class) + " ON " + Sql.column(Account_.id) + " = " + Sql.column(Investor_.account));
         this.investor_browse_provider.setSort("name", SortOrder.DESCENDING);
         this.investor_browse_provider.applyCount(Sql.column(Investor_.id));
 
@@ -87,6 +90,40 @@ public class InvestorBrowsePage extends MasterPage {
                 }
             };
             this.investor_browse_column.add(this.investor_browse_provider.filteredColumn(String.class, Model.of(label), key, sql, serializer, filter, deserializer));
+        }
+        {
+            String label = "Account No";
+            String key = "account_no";
+            String sql = Sql.column(Account_.accountNo);
+            SerializerFunction<String> serializer = (value) -> value;
+            DeserializerFunction<String> deserializer = (value) -> value;
+            FilterFunction<String> filter = (count, alias, params, filterText) -> {
+                String v = StringUtils.trimToEmpty(deserializer.apply(filterText));
+                if (!v.isEmpty()) {
+                    params.put(key, v + "%");
+                    return List.of(AbstractJdbcDataProvider.WHERE + sql + " LIKE :" + key);
+                } else {
+                    return null;
+                }
+            };
+            this.investor_browse_column.add(this.investor_browse_provider.filteredColumn(String.class, Model.of(label), key, sql, serializer, filter, deserializer));
+        }
+        {
+            String label = "Balance";
+            String key = "balance";
+            String sql = Sql.column(Account_.balance);
+            SerializerFunction<Double> serializer = (value) -> String.valueOf(value);
+            DeserializerFunction<Double> deserializer = (value) -> Double.valueOf(value);
+            FilterFunction<Double> filter = (count, alias, params, filterText) -> {
+                Double v = deserializer.apply(filterText);
+                if (v != null) {
+                    params.put(key, v + "%");
+                    return List.of(AbstractJdbcDataProvider.WHERE + sql + " = :" + key);
+                } else {
+                    return null;
+                }
+            };
+            this.investor_browse_column.add(this.investor_browse_provider.filteredColumn(Double.class, Model.of(label), key, sql, serializer, filter, deserializer));
         }
     }
 
@@ -127,12 +164,12 @@ public class InvestorBrowsePage extends MasterPage {
 
     protected void createButtonClick() {
         ApplicationContext context = WicketFactory.getApplicationContext();
-        InvestorRepository repository = context.getBean(InvestorRepository.class);
+        InvestorService service = context.getBean(InvestorService.class);
 
-        Investor entity = new Investor();
-        entity.setName(this.name_value);
-
-        repository.save(entity);
+        InvestorCreateRequest request = new InvestorCreateRequest();
+        request.setInitialBalanceAmount(BigDecimal.valueOf(0D));
+        request.setName(this.name_value);
+        service.investorCreate(request);
 
         setResponsePage(InvestorBrowsePage.class);
     }

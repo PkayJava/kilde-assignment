@@ -17,9 +17,7 @@ import com.senior.cyber.frmk.common.wicket.layout.UIColumn;
 import com.senior.cyber.frmk.common.wicket.layout.UIContainer;
 import com.senior.cyber.frmk.common.wicket.layout.UIRow;
 import com.senior.cyber.frmk.common.wicket.markup.html.panel.ContainerFeedbackBehavior;
-import com.senior.kilde.assignment.dao.entity.Borrower;
-import com.senior.kilde.assignment.dao.entity.Borrower_;
-import com.senior.kilde.assignment.dao.entity.Role;
+import com.senior.kilde.assignment.dao.entity.*;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepository;
 import com.senior.kilde.assignment.web.data.MySqlDataProvider;
 import com.senior.kilde.assignment.web.pages.MasterPage;
@@ -65,6 +63,7 @@ public class BorrowerBrowsePage extends MasterPage {
         super.onInitData();
 
         this.borrower_browse_provider = new MySqlDataProvider(Sql.table(Borrower_.class));
+        this.borrower_browse_provider.applyJoin("account", "INNER JOIN " + Sql.table(Account_.class) + " ON " + Sql.column(Account_.id) + " = " + Sql.column(Borrower_.account));
         this.borrower_browse_provider.setSort("name", SortOrder.DESCENDING);
         this.borrower_browse_provider.applyCount(Sql.column(Borrower_.id));
 
@@ -87,6 +86,40 @@ public class BorrowerBrowsePage extends MasterPage {
                 }
             };
             this.borrower_browse_column.add(this.borrower_browse_provider.filteredColumn(String.class, Model.of(label), key, sql, serializer, filter, deserializer));
+        }
+        {
+            String label = "Account No";
+            String key = "account_no";
+            String sql = Sql.column(Account_.accountNo);
+            SerializerFunction<String> serializer = (value) -> value;
+            DeserializerFunction<String> deserializer = (value) -> value;
+            FilterFunction<String> filter = (count, alias, params, filterText) -> {
+                String v = StringUtils.trimToEmpty(deserializer.apply(filterText));
+                if (!v.isEmpty()) {
+                    params.put(key, v + "%");
+                    return List.of(AbstractJdbcDataProvider.WHERE + sql + " LIKE :" + key);
+                } else {
+                    return null;
+                }
+            };
+            this.borrower_browse_column.add(this.borrower_browse_provider.filteredColumn(String.class, Model.of(label), key, sql, serializer, filter, deserializer));
+        }
+        {
+            String label = "Balance";
+            String key = "balance";
+            String sql = Sql.column(Account_.balance);
+            SerializerFunction<Double> serializer = (value) -> String.valueOf(value);
+            DeserializerFunction<Double> deserializer = (value) -> Double.valueOf(value);
+            FilterFunction<Double> filter = (count, alias, params, filterText) -> {
+                Double v = deserializer.apply(filterText);
+                if (v != null) {
+                    params.put(key, v + "%");
+                    return List.of(AbstractJdbcDataProvider.WHERE + sql + " = :" + key);
+                } else {
+                    return null;
+                }
+            };
+            this.borrower_browse_column.add(this.borrower_browse_provider.filteredColumn(Double.class, Model.of(label), key, sql, serializer, filter, deserializer));
         }
     }
 
