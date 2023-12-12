@@ -1,7 +1,8 @@
 package com.senior.kilde.assignment.api.service;
 
-import com.senior.kilde.assignment.api.dto.BorrowerCreateRequest;
-import com.senior.kilde.assignment.api.dto.BorrowerCreateResponse;
+import com.senior.kilde.assignment.scommon.dto.BorrowerCreateRequest;
+import com.senior.kilde.assignment.scommon.dto.BorrowerCreateResponse;
+import com.senior.kilde.assignment.scommon.service.BorrowerService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.jupiter.api.Assertions;
