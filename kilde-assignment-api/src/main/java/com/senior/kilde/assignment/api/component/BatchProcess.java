@@ -1,6 +1,6 @@
 package com.senior.kilde.assignment.api.component;
 
-import com.senior.kilde.assignment.api.service.RepaymentService;
+import com.senior.kilde.assignment.scommon.service.RepaymentService;
 import com.senior.kilde.assignment.dao.entity.BorrowerRepayment;
 import com.senior.kilde.assignment.dao.entity.BorrowerRepayment_;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepository;

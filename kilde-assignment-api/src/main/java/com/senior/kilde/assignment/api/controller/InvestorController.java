@@ -1,7 +1,7 @@
 package com.senior.kilde.assignment.api.controller;
 
-import com.senior.kilde.assignment.api.dto.*;
-import com.senior.kilde.assignment.api.service.InvestorService;
+import com.senior.kilde.assignment.scommon.dto.*;
+import com.senior.kilde.assignment.scommon.service.InvestorService;
 import com.senior.kilde.assignment.dao.entity.Investor;
 import com.senior.kilde.assignment.dao.repository.AccountRepository;
 import com.senior.kilde.assignment.dao.repository.InvestorRepository;

@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         },
         scanBasePackages = {
                 "com.senior.kilde.assignment.dao.repository",
+                "com.senior.kilde.assignment.scommon.service",
                 "com.senior.kilde.assignment.api"
         }
         // @formatter:on

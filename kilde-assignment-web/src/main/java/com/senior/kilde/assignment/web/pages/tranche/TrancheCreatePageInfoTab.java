@@ -8,8 +8,8 @@ import com.senior.cyber.frmk.common.wicket.layout.UIColumn;
 import com.senior.cyber.frmk.common.wicket.layout.UIContainer;
 import com.senior.cyber.frmk.common.wicket.layout.UIRow;
 import com.senior.cyber.frmk.common.wicket.markup.html.panel.ContainerFeedbackBehavior;
-import com.senior.kilde.assignment.dao.entity.Tranche;
-import com.senior.kilde.assignment.dao.repository.TrancheRepository;
+import com.senior.kilde.assignment.scommon.dto.TrancheCreateRequest;
+import com.senior.kilde.assignment.scommon.service.TrancheService;
 import com.senior.kilde.assignment.web.validator.TrancheNameValidator;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.extensions.markup.html.tabs.TabbedPanel;
@@ -59,11 +59,6 @@ public class TrancheCreatePageInfoTab extends ContentPanel {
     protected UIContainer minimum_investment_amount_container;
     protected TextField<Double> minimum_investment_amount_field;
     protected Double minimum_investment_amount_value;
-
-    protected UIColumn maximum_investment_amount_column;
-    protected UIContainer maximum_investment_amount_container;
-    protected TextField<Double> maximum_investment_amount_field;
-    protected Double maximum_investment_amount_value;
 
     protected UIColumn maximum_investment_amount_per_investor_column;
     protected UIContainer maximum_investment_amount_per_investor_container;
@@ -146,16 +141,6 @@ public class TrancheCreatePageInfoTab extends ContentPanel {
         this.minimum_investment_amount_container.add(this.minimum_investment_amount_field);
         this.minimum_investment_amount_container.newFeedback("minimum_investment_amount_feedback", this.minimum_investment_amount_field);
 
-        this.maximum_investment_amount_column = this.row3.newUIColumn("maximum_investment_amount_column", Size.Four_4);
-        this.maximum_investment_amount_container = this.maximum_investment_amount_column.newUIContainer("maximum_investment_amount_container");
-        this.maximum_investment_amount_field = new TextField<>("maximum_investment_amount_field", new PropertyModel<>(this, "maximum_investment_amount_value"));
-        this.maximum_investment_amount_field.setLabel(Model.of("Maximum Investment Amount"));
-        this.minimum_investment_amount_field.add(RangeValidator.minimum(0D));
-        this.maximum_investment_amount_field.add(new ContainerFeedbackBehavior());
-        this.maximum_investment_amount_field.setRequired(true);
-        this.maximum_investment_amount_container.add(this.maximum_investment_amount_field);
-        this.maximum_investment_amount_container.newFeedback("maximum_investment_amount_feedback", this.maximum_investment_amount_field);
-
         this.maximum_investment_amount_per_investor_column = this.row3.newUIColumn("maximum_investment_amount_per_investor_column", Size.Four_4);
         this.maximum_investment_amount_per_investor_container = this.maximum_investment_amount_per_investor_column.newUIContainer("maximum_investment_amount_per_investor_container");
         this.maximum_investment_amount_per_investor_field = new TextField<>("maximum_investment_amount_per_investor_field", new PropertyModel<>(this, "maximum_investment_amount_per_investor_value"));
@@ -182,17 +167,17 @@ public class TrancheCreatePageInfoTab extends ContentPanel {
 
     protected void saveButtonClick() {
         ApplicationContext context = WicketFactory.getApplicationContext();
-        TrancheRepository repository = context.getBean(TrancheRepository.class);
+        TrancheService service = context.getBean(TrancheService.class);
 
-        Tranche entity = new Tranche();
-        entity.setName(this.name_value);
-        entity.setDuration(this.duration_value);
-        entity.setAnnualInterest(this.annual_interest_value);
-        entity.setMinimumInvestmentAmount(BigDecimal.valueOf(this.minimum_investment_amount_value));
-        entity.setMaximumInvestmentAmount(BigDecimal.valueOf(this.maximum_investment_amount_value));
-        entity.setMaximumInvestmentAmountPerInvestor(BigDecimal.valueOf(this.maximum_investment_amount_value));
-        entity.setAmountAvailableForInvestment(BigDecimal.valueOf(this.amount_available_for_investment_value));
-        repository.save(entity);
+        TrancheCreateRequest request = new TrancheCreateRequest();
+        request.setName(this.name_value);
+        request.setDuration(this.duration_value);
+        request.setAnnualInterestRate(this.annual_interest_value);
+        request.setMinimumInvestmentAmount(BigDecimal.valueOf(this.minimum_investment_amount_value));
+        request.setAmountAvailableForInvestment(BigDecimal.valueOf(this.amount_available_for_investment_value));
+        request.setMaximumInvestmentAmountPerInvestor(BigDecimal.valueOf(this.maximum_investment_amount_per_investor_value));
+
+        service.trancheCreate(request);
 
         setResponsePage(TrancheBrowsePage.class);
     }

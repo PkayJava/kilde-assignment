@@ -1,6 +1,6 @@
 package com.senior.kilde.assignment.api.controller;
 
-import com.senior.kilde.assignment.api.dto.*;
+import com.senior.kilde.assignment.scommon.dto.*;
 import com.senior.kilde.assignment.dao.entity.*;
 import com.senior.kilde.assignment.dao.repository.*;
 import lombok.RequiredArgsConstructor;

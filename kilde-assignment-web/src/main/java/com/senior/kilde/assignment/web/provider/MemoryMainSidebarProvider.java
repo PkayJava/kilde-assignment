@@ -14,6 +14,7 @@ import com.senior.kilde.assignment.dao.repository.UserRepository;
 import com.senior.kilde.assignment.web.WebApplication;
 import com.senior.kilde.assignment.web.factory.WebSession;
 import com.senior.kilde.assignment.web.pages.LogoutPage;
+import com.senior.kilde.assignment.web.pages.account.AccountBrowsePage;
 import com.senior.kilde.assignment.web.pages.borrower.BorrowerBrowsePage;
 import com.senior.kilde.assignment.web.pages.group.GroupBrowsePage;
 import com.senior.kilde.assignment.web.pages.investor.InvestorBrowsePage;
@@ -68,6 +69,7 @@ public class MemoryMainSidebarProvider implements IMainSidebarProvider {
         }
 
         if (this.session.isSignedIn()) {
+            children.add(new SidebarMenuItem("fas fa-user-tie", "Account", null, AccountBrowsePage.class));
             children.add(new SidebarMenuItem("fas fa-user-tie", "Investor", null, InvestorBrowsePage.class));
             children.add(new SidebarMenuItem("fas fa-user-tie", "Borrower", null, BorrowerBrowsePage.class));
             List<SidebarMenu> trancheMenu = trancheMenu(roles);

@@ -1,7 +1,7 @@
 package com.senior.kilde.assignment.api.controller;
 
-import com.senior.kilde.assignment.api.dto.*;
-import com.senior.kilde.assignment.api.service.BorrowerService;
+import com.senior.kilde.assignment.scommon.dto.*;
+import com.senior.kilde.assignment.scommon.service.BorrowerService;
 import com.senior.kilde.assignment.dao.entity.Borrower;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepository;
 import lombok.RequiredArgsConstructor;

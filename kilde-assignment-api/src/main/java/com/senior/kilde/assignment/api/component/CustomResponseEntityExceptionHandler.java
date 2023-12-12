@@ -1,6 +1,6 @@
 package com.senior.kilde.assignment.api.component;
 
-import com.senior.kilde.assignment.api.dto.ErrorResponse;
+import com.senior.kilde.assignment.scommon.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;

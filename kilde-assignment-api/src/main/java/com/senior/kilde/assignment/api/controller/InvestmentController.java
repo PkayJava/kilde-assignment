@@ -1,10 +1,10 @@
 package com.senior.kilde.assignment.api.controller;
 
-import com.senior.kilde.assignment.api.dto.InvestmentBorrowRequest;
-import com.senior.kilde.assignment.api.dto.InvestmentBorrowResponse;
-import com.senior.kilde.assignment.api.dto.InvestmentInvestRequest;
-import com.senior.kilde.assignment.api.dto.InvestmentInvestResponse;
-import com.senior.kilde.assignment.api.service.InvestmentService;
+import com.senior.kilde.assignment.scommon.dto.InvestmentBorrowRequest;
+import com.senior.kilde.assignment.scommon.dto.InvestmentBorrowResponse;
+import com.senior.kilde.assignment.scommon.dto.InvestmentInvestRequest;
+import com.senior.kilde.assignment.scommon.dto.InvestmentInvestResponse;
+import com.senior.kilde.assignment.scommon.service.InvestmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

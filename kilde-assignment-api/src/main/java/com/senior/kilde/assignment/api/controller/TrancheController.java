@@ -1,10 +1,10 @@
 package com.senior.kilde.assignment.api.controller;
 
-import com.senior.kilde.assignment.api.dto.TrancheCreateRequest;
-import com.senior.kilde.assignment.api.dto.TrancheCreateResponse;
-import com.senior.kilde.assignment.api.dto.TrancheItemDto;
-import com.senior.kilde.assignment.api.dto.TrancheListResponse;
-import com.senior.kilde.assignment.api.service.TrancheService;
+import com.senior.kilde.assignment.scommon.dto.TrancheCreateRequest;
+import com.senior.kilde.assignment.scommon.dto.TrancheCreateResponse;
+import com.senior.kilde.assignment.scommon.dto.TrancheItemDto;
+import com.senior.kilde.assignment.scommon.dto.TrancheListResponse;
+import com.senior.kilde.assignment.scommon.service.TrancheService;
 import com.senior.kilde.assignment.dao.entity.Tranche;
 import com.senior.kilde.assignment.dao.repository.TrancheRepository;
 import lombok.RequiredArgsConstructor;

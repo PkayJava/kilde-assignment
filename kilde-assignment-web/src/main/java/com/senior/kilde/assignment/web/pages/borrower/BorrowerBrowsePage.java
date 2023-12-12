@@ -19,6 +19,8 @@ import com.senior.cyber.frmk.common.wicket.layout.UIRow;
 import com.senior.cyber.frmk.common.wicket.markup.html.panel.ContainerFeedbackBehavior;
 import com.senior.kilde.assignment.dao.entity.*;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepository;
+import com.senior.kilde.assignment.scommon.dto.BorrowerCreateRequest;
+import com.senior.kilde.assignment.scommon.service.BorrowerService;
 import com.senior.kilde.assignment.web.data.MySqlDataProvider;
 import com.senior.kilde.assignment.web.pages.MasterPage;
 import com.senior.kilde.assignment.web.validator.BorrowerNameValidator;
@@ -160,12 +162,12 @@ public class BorrowerBrowsePage extends MasterPage {
 
     protected void createButtonClick() {
         ApplicationContext context = WicketFactory.getApplicationContext();
-        BorrowerRepository repository = context.getBean(BorrowerRepository.class);
+        BorrowerService service = context.getBean(BorrowerService.class);
 
-        Borrower entity = new Borrower();
-        entity.setName(this.name_value);
+        BorrowerCreateRequest request = new BorrowerCreateRequest();
+        request.setName(this.name_value);
 
-        repository.save(entity);
+        service.borrowerCreate(request);
 
         setResponsePage(BorrowerBrowsePage.class);
     }

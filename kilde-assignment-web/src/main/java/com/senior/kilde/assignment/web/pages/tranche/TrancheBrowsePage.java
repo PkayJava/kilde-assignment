@@ -276,7 +276,7 @@ public class TrancheBrowsePage extends MasterPage {
 
     protected List<ActionItem> tranche_browse_action_link(String link, Tuple model) {
         List<ActionItem> actions = new ArrayList<>(0);
-        actions.add(new ActionItem("Edit", Model.of("Edit"), ItemCss.SUCCESS));
+//        actions.add(new ActionItem("Edit", Model.of("Edit"), ItemCss.SUCCESS));
         return actions;
     }
 
