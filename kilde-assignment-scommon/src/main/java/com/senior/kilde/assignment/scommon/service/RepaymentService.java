@@ -24,7 +24,7 @@ public class RepaymentService {
 
     private final TrancheRepository trancheRepository;
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Throwable.class)
     public void processRepayment(BorrowerRepayment repayment) throws CloneNotSupportedException {
         Account account = this.accountRepository.findById(repayment.getAccount().getId()).orElseThrow();
         account = (Account) account.clone();
