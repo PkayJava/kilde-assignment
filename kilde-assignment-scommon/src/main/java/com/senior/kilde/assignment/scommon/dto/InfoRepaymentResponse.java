@@ -40,8 +40,7 @@ public class InfoRepaymentResponse {
     @JsonProperty("nextPaymentAmount")
     private BigDecimal nextPaymentAmount;
 
-    // TODO: include the repaymentSchedule
     @JsonProperty("repaymentSchedule")
-    private List<Map<String,Object>> repaymentSchedule;
+    private List<InfoRepaymentResponseItem> repaymentSchedule;
 
 }

@@ -4,6 +4,8 @@ import com.senior.kilde.assignment.scommon.dto.*;
 import com.senior.kilde.assignment.dao.entity.*;
 import com.senior.kilde.assignment.dao.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.IllegalFieldValueException;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.*;
 
 @RestController
 @RequestMapping(path = InfoController.BASE)
@@ -65,6 +69,36 @@ public class InfoController {
         response.setTotalOutstandingAmount(borrowerRepayment.getTotalOutstandingAmount());
         response.setNextPaymentDate(borrowerRepayment.getNextPaymentDate());
         response.setNextPaymentAmount(borrowerRepayment.getNextPaymentAmount());
+
+        List<InfoRepaymentResponseItem> schedules = new ArrayList<>();
+        LocalDate paymentDate = LocalDate.fromDateFields(borrowerRepayment.getCreatedDate());
+        for (int i = 1; i <= borrowerRepayment.getLoanDuration(); i++) {
+            InfoRepaymentResponseItem item = new InfoRepaymentResponseItem();
+            if (paymentDate.getDayOfMonth() == borrowerRepayment.getOriginPaymentDay()) {
+                paymentDate = paymentDate.plusMonths(1);
+                item.setPaymentDate(paymentDate.toDate());
+            } else {
+                paymentDate = paymentDate.plusMonths(1);
+                int day = borrowerRepayment.getOriginPaymentDay();
+                while (true) {
+                    try {
+                        paymentDate = new LocalDate(paymentDate.getYear(), paymentDate.getMonthOfYear(), day);
+                        break;
+                    } catch (IllegalFieldValueException e) {
+                        day = day - 1;
+                    }
+                }
+                item.setPaymentDate(paymentDate.toDate());
+            }
+            item.setMonth(i);
+            if (i == borrowerRepayment.getLoanDuration()) {
+                item.setPaymentAmount(borrowerRepayment.getNextPaymentAmount().add(borrowerRepayment.getLoanAmount()));
+            } else {
+                item.setPaymentAmount(borrowerRepayment.getNextPaymentAmount());
+            }
+            schedules.add(item);
+        }
+        response.setRepaymentSchedule(schedules);
 
         return ResponseEntity.ok(response);
     }

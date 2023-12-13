@@ -8,6 +8,7 @@ import com.senior.kilde.assignment.dao.repository.AccountRepository;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepaymentRepository;
 import com.senior.kilde.assignment.dao.repository.TrancheRepository;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,13 @@ public class RepaymentService {
             int originPaymentDay = repayment.getOriginPaymentDay();
             if (currentPaymentDate.getDayOfMonth() != repayment.getOriginPaymentDay()) {
                 LocalDate nextPaymentDate = null;
-                while (nextPaymentDate == null) {
-                    nextPaymentDate = new LocalDate(currentPaymentDate.getYear(), currentPaymentDate.getMonthOfYear() + 1, originPaymentDay);
-                    originPaymentDay = originPaymentDay - 1;
+                while (true) {
+                    try {
+                        nextPaymentDate = new LocalDate(currentPaymentDate.getYear(), currentPaymentDate.getMonthOfYear() + 1, originPaymentDay);
+                        break;
+                    } catch (IllegalFieldValueException e) {
+                        originPaymentDay = originPaymentDay - 1;
+                    }
                 }
                 repayment.setNextPaymentDate(nextPaymentDate.toDate());
             } else {
