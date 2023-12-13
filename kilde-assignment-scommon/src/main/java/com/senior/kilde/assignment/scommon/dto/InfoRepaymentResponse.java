@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Setter
 @Getter
@@ -37,5 +39,9 @@ public class InfoRepaymentResponse {
 
     @JsonProperty("nextPaymentAmount")
     private BigDecimal nextPaymentAmount;
+
+    // TODO: include the repaymentSchedule
+    @JsonProperty("repaymentSchedule")
+    private List<Map<String,Object>> repaymentSchedule;
 
 }
