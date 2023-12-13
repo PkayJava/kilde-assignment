@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Setter
 @Getter
@@ -34,5 +35,8 @@ public class InfoTrancheResponse {
 
     @JsonProperty("status")
     private TrancheStatus status;
+
+    @JsonProperty("investors")
+    private List<InfoTrancheResponseItem> investors;
 
 }

@@ -40,6 +40,8 @@ public class InfoController {
 
     private final TrancheRepository trancheRepository;
 
+    private final TrancheFundRepository trancheFundRepository;
+
     @RequestMapping(path = TRANCHE + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InfoTrancheResponse> infoTranche(@PathVariable("id") String id) {
         Tranche tranche = this.trancheRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -50,8 +52,20 @@ public class InfoController {
         response.setStatus(tranche.getStatus());
         response.setAnnualInterest(tranche.getAnnualInterest());
         response.setMaximumInvestmentAmount(tranche.getMaximumInvestmentAmount());
+        response.setMaximumInvestmentAmountPerInvestor(tranche.getMaximumInvestmentAmountPerInvestor());
         response.setAmountAvailableForInvestment(tranche.getAmountAvailableForInvestment());
         response.setMinimumInvestmentAmount(tranche.getMinimumInvestmentAmount());
+
+        List<TrancheFund> funds = this.trancheFundRepository.findByTranche(tranche);
+        List<InfoTrancheResponseItem> items = new ArrayList<>(funds.size());
+        for (TrancheFund fund : funds) {
+            Investor investor = this.investorRepository.findById(fund.getInvestor().getId()).orElseThrow();
+            InfoTrancheResponseItem item = new InfoTrancheResponseItem();
+            item.setInvestorName(investor.getName());
+            item.setInvestedAmount(fund.getFundAmount());
+            items.add(item);
+        }
+        response.setInvestors(items);
 
         return ResponseEntity.ok(response);
     }
