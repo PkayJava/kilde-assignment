@@ -10,16 +10,19 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.jpa.AvailableHints;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class BatchProcess {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchProcess.class);
@@ -27,11 +30,6 @@ public class BatchProcess {
     private final EntityManager entityManager;
 
     private final RepaymentService repaymentService;
-
-    public BatchProcess(EntityManager entityManager, RepaymentService repaymentService) {
-        this.entityManager = entityManager;
-        this.repaymentService = repaymentService;
-    }
 
     /**
      * Daily at time 00
