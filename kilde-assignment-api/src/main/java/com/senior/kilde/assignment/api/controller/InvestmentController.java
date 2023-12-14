@@ -27,6 +27,14 @@ public class InvestmentController {
 
     private final InvestmentService investmentService;
 
+    /**
+     * invest function, that will debit the amount from the investor account and credit into tranche account and 2% investor will apply
+     * 2% of the amount go to Platform Account - 0000-00-00-00000
+     * 98% of the amount go to tranche Account
+     * @param httpRequest
+     * @return
+     * @throws CloneNotSupportedException
+     */
     @RequestMapping(path = INVEST, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InvestmentInvestResponse> investmentInvest(
             RequestEntity<InvestmentInvestRequest> httpRequest
@@ -42,6 +50,13 @@ public class InvestmentController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * borrow function, the amount will credit to borrower account, and create a loan account for that for loan collector process,
+     * trache status will turn into InProgress, this tranche will be made as available once the loan completed it cycle.
+     * @param httpRequest
+     * @return
+     * @throws CloneNotSupportedException
+     */
     @RequestMapping(path = BORROW, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InvestmentBorrowResponse> investmentBorrow(
             RequestEntity<InvestmentBorrowRequest> httpRequest

@@ -36,6 +36,10 @@ public class InvestorController {
 
     private final InvestorService investorService;
 
+    /**
+     * CRUD, listing
+     * @return
+     */
     @RequestMapping(path = LIST)
     public ResponseEntity<InvestorListResponse> investorList() {
         List<Investor> investors = this.investorRepository.findAll();
@@ -55,6 +59,11 @@ public class InvestorController {
         }
     }
 
+    /**
+     * CRUD, create investor, create his account, and deposit init amount
+     * @param httpRequest
+     * @return
+     */
     @RequestMapping(path = CREATE, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InvestorCreateResponse> investorCreate(RequestEntity<InvestorCreateRequest> httpRequest) {
         InvestorCreateRequest request = httpRequest.getBody();
@@ -71,6 +80,13 @@ public class InvestorController {
         return ResponseEntity.created(null).body(response);
     }
 
+    /**
+     * CRUD, update his name
+     * @param id
+     * @param httpRequest
+     * @return
+     * @throws CloneNotSupportedException
+     */
     @RequestMapping(path = UPDATE + "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InvestorUpdateResponse> investorUpdate(@PathVariable("id") String id, RequestEntity<InvestorUpdateRequest> httpRequest) throws CloneNotSupportedException {
         InvestorUpdateRequest request = httpRequest.getBody();
@@ -84,7 +100,13 @@ public class InvestorController {
         return ResponseEntity.ok(response);
     }
 
-    @RequestMapping(path = DEPOSIT, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * deposit money into his account
+     * @param httpRequest
+     * @return
+     * @throws CloneNotSupportedException
+     */
+    @RequestMapping(path = DEPOSIT, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InvestorDepositResponse> investorDeposit(RequestEntity<InvestorDepositRequest> httpRequest) throws CloneNotSupportedException {
         InvestorDepositRequest request = httpRequest.getBody();
 

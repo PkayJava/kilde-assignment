@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+    <changeSet author="Senior Cyber" id="V106__AccountTransactionTable-1">
+
+        <createTable tableName="tbl_account_transaction">
+            <column name="account_transaction_id" type="VARCHAR(36)">
+                <constraints notNullConstraintName="notnull_key_70" nullable="false" primaryKey="true" primaryKeyName="primary_key_14"/>
+            </column>
+            <column name="account_id" type="VARCHAR(36)">
+                <constraints notNullConstraintName="notnull_key_71" nullable="false"/>
+            </column>
+            <column name="note" type="VARCHAR(200)"/>
+            <column name="type" type="VARCHAR(6)">
+                <constraints notNullConstraintName="notnull_key_72" nullable="false"/>
+            </column>
+            <column name="created_date" type="DATETIME">
+                <constraints notNullConstraintName="notnull_key_73" nullable="false"/>
+            </column>
+            <column name="amount" type="DOUBLE(20,4)">
+                <constraints notNullConstraintName="notnull_key_74" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="version" type="INT(11)">
+                <constraints notNullConstraintName="notnull_key_75" nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

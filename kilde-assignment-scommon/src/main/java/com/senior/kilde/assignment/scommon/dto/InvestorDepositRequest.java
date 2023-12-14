@@ -16,4 +16,7 @@ public class InvestorDepositRequest {
     @JsonProperty("amount")
     private BigDecimal amount;
 
+    @JsonProperty("note")
+    private String note;
+
 }

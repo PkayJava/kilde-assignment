@@ -33,6 +33,7 @@ public class BorrowerRepayment implements Serializable, Cloneable {
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "created_date")
     private Date createdDate;
 
@@ -60,9 +61,11 @@ public class BorrowerRepayment implements Serializable, Cloneable {
     @Column(name = "total_repayment_amount")
     private BigDecimal totalRepaymentAmount;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "next_payment_date")
     private Date nextPaymentDate;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "next_payment_back_date")
     private Date nextPaymentBackDate;
 

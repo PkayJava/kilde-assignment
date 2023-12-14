@@ -33,6 +33,11 @@ public class BorrowerController {
 
     private final BorrowerService borrowerService;
 
+    /**
+     * CRUD function, list
+     *
+     * @return
+     */
     @RequestMapping(path = LIST)
     public ResponseEntity<BorrowerListResponse> borrowerList() {
         List<Borrower> borrowers = this.borrowerRepository.findAll();
@@ -52,6 +57,12 @@ public class BorrowerController {
         }
     }
 
+    /**
+     * CRUD, create borrower, it will also create account
+     *
+     * @param httpRequest
+     * @return
+     */
     @RequestMapping(path = CREATE, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BorrowerCreateResponse> borrowerCreate(RequestEntity<BorrowerCreateRequest> httpRequest) {
         BorrowerCreateRequest request = httpRequest.getBody();
@@ -69,6 +80,14 @@ public class BorrowerController {
         return ResponseEntity.created(null).body(response);
     }
 
+    /**
+     * CRUD, update his name
+     *
+     * @param id
+     * @param httpRequest
+     * @return
+     * @throws CloneNotSupportedException
+     */
     @RequestMapping(path = UPDATE + "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BorrowerUpdateResponse> borrowerUpdate(@PathVariable("id") String id, RequestEntity<BorrowerUpdateRequest> httpRequest) throws CloneNotSupportedException {
         BorrowerUpdateRequest request = httpRequest.getBody();
@@ -87,7 +106,15 @@ public class BorrowerController {
         return ResponseEntity.ok(response);
     }
 
-    @RequestMapping(path = DEPOSIT, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+
+    /**
+     * deposit money into his account
+     *
+     * @param httpRequest
+     * @return
+     * @throws CloneNotSupportedException
+     */
+    @RequestMapping(path = DEPOSIT, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BorrowerDepositResponse> investorDeposit(RequestEntity<BorrowerDepositRequest> httpRequest) throws CloneNotSupportedException {
         BorrowerDepositRequest request = httpRequest.getBody();
 
@@ -100,7 +127,7 @@ public class BorrowerController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "borrowerName is not found");
         }
 
-        BorrowerDepositResponse response = this.borrowerService.investorDeposit(request);
+        BorrowerDepositResponse response = this.borrowerService.borrowerDeposit(request);
 
         return ResponseEntity.ok(response);
     }

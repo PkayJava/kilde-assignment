@@ -36,7 +36,11 @@ public class TrancheController {
 
     private final TrancheService trancheService;
 
-    @RequestMapping(path = "/list")
+    /**
+     * CRUD, listing
+     * @return
+     */
+    @RequestMapping(path = LIST)
     public ResponseEntity<TrancheListResponse> trancheList() {
         List<Tranche> tranches = this.trancheRepository.findAll();
         if (tranches == null) {
@@ -55,7 +59,11 @@ public class TrancheController {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    /**
+     * CRUD, create tranche
+     * @param httpRequest
+     * @return
+     */
     @RequestMapping(path = CREATE, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TrancheCreateResponse> trancheCreate(RequestEntity<TrancheCreateRequest> httpRequest) {
         TrancheCreateRequest request = httpRequest.getBody();
@@ -86,11 +94,6 @@ public class TrancheController {
         if (request.getMinimumInvestmentAmount().doubleValue() < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "minimumInvestmentAmount must greater than or equal 0");
         }
-
-        // TODO : some other validation need to be check
-//        if (request.getMaximumInvestmentAmount() < request.getMinimumInvestmentAmount()){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "maximumInvestmentAmount must greater than or equal minimumInvestmentAmount");
-//        }
 
         TrancheCreateResponse response = this.trancheService.trancheCreate(request);
 

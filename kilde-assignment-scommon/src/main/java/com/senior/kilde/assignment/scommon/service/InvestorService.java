@@ -1,8 +1,11 @@
 package com.senior.kilde.assignment.scommon.service;
 
 import com.senior.kilde.assignment.dao.entity.Account;
+import com.senior.kilde.assignment.dao.entity.AccountTransaction;
 import com.senior.kilde.assignment.dao.entity.Investor;
+import com.senior.kilde.assignment.dao.enums.AccountTransactionType;
 import com.senior.kilde.assignment.dao.repository.AccountRepository;
+import com.senior.kilde.assignment.dao.repository.AccountTransactionRepository;
 import com.senior.kilde.assignment.dao.repository.InvestorRepository;
 import com.senior.kilde.assignment.scommon.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,8 @@ public class InvestorService {
 
     private final AccountRepository accountRepository;
 
+    private final AccountTransactionRepository accountTransactionRepository;
+
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public InvestorCreateResponse investorCreate(InvestorCreateRequest request) {
 
@@ -38,6 +43,16 @@ public class InvestorService {
         account.setAccountNo(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + "-" + RandomStringUtils.randomNumeric(5));
         account.setBalance(request.getInitialBalanceAmount());
         this.accountRepository.save(account);
+
+        if (request.getInitialBalanceAmount().doubleValue() > 0) {
+            AccountTransaction transaction = new AccountTransaction();
+            transaction.setType(AccountTransactionType.CREDIT);
+            transaction.setNote("Initial Amount");
+            transaction.setAmount(request.getInitialBalanceAmount());
+            transaction.setCreatedDate(new Date());
+            transaction.setAccount(account);
+            accountTransactionRepository.save(transaction);
+        }
 
         Investor investor = new Investor();
         investor.setName(request.getName());
@@ -88,6 +103,14 @@ public class InvestorService {
         account = (Account) account.clone();
         account.setBalance(account.getBalance().add(request.getAmount()));
         accountRepository.save(account);
+
+        AccountTransaction transaction = new AccountTransaction();
+        transaction.setType(AccountTransactionType.CREDIT);
+        transaction.setNote(request.getNote());
+        transaction.setAmount(request.getAmount());
+        transaction.setCreatedDate(new Date());
+        transaction.setAccount(account);
+        accountTransactionRepository.save(transaction);
 
         InvestorDepositResponse response = new InvestorDepositResponse();
         response.setAmount(account.getBalance());

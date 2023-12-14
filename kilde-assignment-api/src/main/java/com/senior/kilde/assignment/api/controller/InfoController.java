@@ -42,6 +42,11 @@ public class InfoController {
 
     private final TrancheFundRepository trancheFundRepository;
 
+    /**
+     * tranche detail
+     * @param id
+     * @return
+     */
     @RequestMapping(path = TRANCHE + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InfoTrancheResponse> infoTranche(@PathVariable("id") String id) {
         Tranche tranche = this.trancheRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -70,6 +75,11 @@ public class InfoController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * repayment detail
+     * @param id
+     * @return
+     */
     @RequestMapping(path = REPAYMENT + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InfoRepaymentResponse> infoRepayment(@PathVariable("id") String id) {
         BorrowerRepayment borrowerRepayment = this.borrowerRepaymentRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -117,6 +127,11 @@ public class InfoController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * investor account balance
+     * @param id
+     * @return
+     */
     @RequestMapping(path = INVESTOR + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InfoInvestorResponse> infoInvestor(@PathVariable("id") String id) {
         Investor investor = this.investorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -130,6 +145,11 @@ public class InfoController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * borrower account balance
+     * @param id
+     * @return
+     */
     @RequestMapping(path = BORROWER + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InfoBorrowerResponse> infoBorrower(@PathVariable("id") String id) {
         Borrower borrower = this.borrowerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -143,6 +163,11 @@ public class InfoController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * account balance
+     * @param accountNo
+     * @return
+     */
     @RequestMapping(path = ACCOUNT + "/{accountNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InfoAccountResponse> infoAccount(@PathVariable("accountNo") String accountNo) {
         Account account = this.accountRepository.findByAccountNo(accountNo).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

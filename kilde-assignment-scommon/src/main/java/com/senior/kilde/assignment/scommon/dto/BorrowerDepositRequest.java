@@ -13,6 +13,9 @@ public class BorrowerDepositRequest {
     @JsonProperty("borrowerName")
     private String borrowerName;
 
+    @JsonProperty("note")
+    private String note;
+
     @JsonProperty("amount")
     private BigDecimal amount;
 

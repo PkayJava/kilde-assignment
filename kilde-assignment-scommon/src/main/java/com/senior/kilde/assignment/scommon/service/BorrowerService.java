@@ -1,8 +1,11 @@
 package com.senior.kilde.assignment.scommon.service;
 
 import com.senior.kilde.assignment.dao.entity.Account;
+import com.senior.kilde.assignment.dao.entity.AccountTransaction;
 import com.senior.kilde.assignment.dao.entity.Borrower;
+import com.senior.kilde.assignment.dao.enums.AccountTransactionType;
 import com.senior.kilde.assignment.dao.repository.AccountRepository;
+import com.senior.kilde.assignment.dao.repository.AccountTransactionRepository;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepository;
 import com.senior.kilde.assignment.scommon.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,8 @@ public class BorrowerService {
     private final BorrowerRepository borrowerRepository;
 
     private final AccountRepository accountRepository;
+
+    private final AccountTransactionRepository accountTransactionRepository;
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public BorrowerCreateResponse borrowerCreate(BorrowerCreateRequest request) {
@@ -67,13 +72,22 @@ public class BorrowerService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
-    public BorrowerDepositResponse investorDeposit(BorrowerDepositRequest request) throws CloneNotSupportedException {
+    public BorrowerDepositResponse borrowerDeposit(BorrowerDepositRequest request) throws CloneNotSupportedException {
         Optional<Borrower> optionalBorrower = this.borrowerRepository.findByName(request.getBorrowerName());
         Borrower borrower = optionalBorrower.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+
         Account account = accountRepository.findById(borrower.getAccount().getId()).orElseThrow();
         account = (Account) account.clone();
         account.setBalance(account.getBalance().add(request.getAmount()));
         accountRepository.save(account);
+
+        AccountTransaction transaction = new AccountTransaction();
+        transaction.setType(AccountTransactionType.CREDIT);
+        transaction.setNote(request.getNote());
+        transaction.setAmount(request.getAmount());
+        transaction.setCreatedDate(new Date());
+        transaction.setAccount(account);
+        accountTransactionRepository.save(transaction);
 
         BorrowerDepositResponse response = new BorrowerDepositResponse();
         response.setBalance(account.getBalance());

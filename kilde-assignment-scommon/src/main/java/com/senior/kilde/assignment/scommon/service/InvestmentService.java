@@ -1,6 +1,7 @@
 package com.senior.kilde.assignment.scommon.service;
 
 import com.senior.kilde.assignment.dao.entity.*;
+import com.senior.kilde.assignment.dao.enums.AccountTransactionType;
 import com.senior.kilde.assignment.dao.enums.TrancheStatus;
 import com.senior.kilde.assignment.dao.repository.*;
 import com.senior.kilde.assignment.scommon.dto.InvestmentBorrowRequest;
@@ -34,6 +35,8 @@ public class InvestmentService {
     private final InvestorRepository investorRepository;
 
     private final AccountRepository accountRepository;
+
+    private final AccountTransactionRepository accountTransactionRepository;
 
     private final TrancheFundRepository trancheFundRepository;
 
@@ -74,8 +77,17 @@ public class InvestmentService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "exceed minimum investment amount, currently is at least " + tranche.getMinimumInvestmentAmount());
         }
 
-        account.setBalance(account.getBalance().subtract(request.getAmount()));
-        this.accountRepository.save(account);
+        {
+            account.setBalance(account.getBalance().subtract(request.getAmount()));
+            this.accountRepository.save(account);
+            AccountTransaction transaction = new AccountTransaction();
+            transaction.setType(AccountTransactionType.DEBIT);
+            transaction.setNote("Investment");
+            transaction.setAmount(request.getAmount());
+            transaction.setCreatedDate(new Date());
+            transaction.setAccount(account);
+            accountTransactionRepository.save(transaction);
+        }
 
         BigDecimal investorFee = request.getAmount().multiply(BigDecimal.valueOf(0.02d));
         BigDecimal investmentAmount = request.getAmount().subtract(investorFee);
@@ -89,8 +101,17 @@ public class InvestmentService {
         trancheFund.setInvestor(investor);
         this.trancheFundRepository.save(trancheFund);
 
-        Account platformAccount = this.accountRepository.findByAccountNo(PLATFORM_ACCOUNT_NO).orElseThrow();
-        platformAccount.setBalance(platformAccount.getBalance().add(investorFee));
+        {
+            Account platformAccount = this.accountRepository.findByAccountNo(PLATFORM_ACCOUNT_NO).orElseThrow();
+            platformAccount.setBalance(platformAccount.getBalance().add(investorFee));
+            AccountTransaction transaction = new AccountTransaction();
+            transaction.setType(AccountTransactionType.CREDIT);
+            transaction.setNote("Platform Fee");
+            transaction.setAmount(request.getAmount());
+            transaction.setCreatedDate(new Date());
+            transaction.setAccount(platformAccount);
+            accountTransactionRepository.save(transaction);
+        }
 
         InvestmentInvestResponse response = new InvestmentInvestResponse();
         response.setMessage("ok");
@@ -158,7 +179,14 @@ public class InvestmentService {
         borrowerAccount.setBalance(borrowerAccount.getBalance().add(amount));
         this.accountRepository.save(borrowerAccount);
 
-        // TODO : create a borrow repayment
+        AccountTransaction transaction = new AccountTransaction();
+        transaction.setType(AccountTransactionType.CREDIT);
+        transaction.setNote("Loan Amount");
+        transaction.setAmount(request.getAmount());
+        transaction.setCreatedDate(new Date());
+        transaction.setAccount(borrowerAccount);
+        accountTransactionRepository.save(transaction);
+
         InvestmentBorrowResponse response = new InvestmentBorrowResponse();
         response.setMessage("ok");
 
