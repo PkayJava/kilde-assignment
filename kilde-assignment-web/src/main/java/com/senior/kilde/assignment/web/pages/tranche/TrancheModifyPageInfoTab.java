@@ -1,6 +1,6 @@
 package com.senior.kilde.assignment.web.pages.tranche;
 
-import com.senior.cyber.frmk.common.base.WicketFactory;
+import com.senior.kilde.assignment.web.factory.WicketFactory;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.tabs.ContentPanel;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.tabs.Tab;
 import com.senior.cyber.frmk.common.wicket.layout.Size;

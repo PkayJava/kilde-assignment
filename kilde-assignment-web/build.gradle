@@ -46,6 +46,9 @@ dependencies {
 
     compileOnly "org.projectlombok:lombok:${lombok}"
     annotationProcessor "org.projectlombok:lombok:${lombok}"
+
+    testImplementation "org.apache.wicket:wicket-tester:${wicket}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${spring_boot}"
 }
 
 dependencyManagement {
@@ -57,4 +60,8 @@ dependencyManagement {
 bootJar {
     archiveBaseName = "kilde-assignment-web"
     archiveVersion = ""
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }

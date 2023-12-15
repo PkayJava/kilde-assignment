@@ -1,6 +1,6 @@
 package com.senior.kilde.assignment.web.validator;
 
-import com.senior.cyber.frmk.common.base.WicketFactory;
+import com.senior.kilde.assignment.web.factory.WicketFactory;
 import com.senior.kilde.assignment.dao.entity.Borrower;
 import com.senior.kilde.assignment.dao.entity.Group;
 import com.senior.kilde.assignment.dao.repository.BorrowerRepository;

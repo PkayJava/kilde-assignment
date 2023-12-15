@@ -1,8 +1,8 @@
 package com.senior.kilde.assignment.web.validator;
 
-import com.senior.cyber.frmk.common.base.WicketFactory;
 import com.senior.kilde.assignment.dao.entity.User;
 import com.senior.kilde.assignment.dao.repository.UserRepository;
+import com.senior.kilde.assignment.web.factory.WicketFactory;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;

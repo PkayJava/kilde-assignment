@@ -1,7 +1,7 @@
 package com.senior.kilde.assignment.web.data;
 
-import com.senior.cyber.frmk.common.base.WicketFactory;
 import com.senior.cyber.frmk.common.wicket.markup.html.form.select2.AbstractJdbcChoiceProvider;
+import com.senior.kilde.assignment.web.factory.WicketFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 

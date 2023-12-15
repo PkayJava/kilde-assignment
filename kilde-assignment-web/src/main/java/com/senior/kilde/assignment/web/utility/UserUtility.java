@@ -1,8 +1,8 @@
 package com.senior.kilde.assignment.web.utility;
 
-import com.senior.cyber.frmk.common.base.WicketFactory;
 import com.senior.kilde.assignment.dao.entity.User;
 import com.senior.kilde.assignment.dao.repository.UserRepository;
+import com.senior.kilde.assignment.web.factory.WicketFactory;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;

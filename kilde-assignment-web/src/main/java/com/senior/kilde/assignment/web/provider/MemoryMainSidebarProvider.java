@@ -1,6 +1,6 @@
 package com.senior.kilde.assignment.web.provider;
 
-import com.senior.cyber.frmk.common.base.WicketFactory;
+import com.senior.kilde.assignment.web.factory.WicketFactory;
 import com.senior.cyber.frmk.common.model.Brand;
 import com.senior.cyber.frmk.common.model.MainSidebar;
 import com.senior.cyber.frmk.common.model.UserPanel;
