@@ -1,42 +1,36 @@
 package com.senior.kilde.assignment.web.pages.user;
 
-import com.senior.cyber.frmk.common.base.WebUiProperties;
-import com.senior.kilde.assignment.web.factory.WicketApplication;
-import com.senior.kilde.assignment.web.factory.WicketFactory;
+import com.senior.kilde.assignment.web.BaseTest;
 import com.senior.kilde.assignment.web.pages.LoginPage;
-import jakarta.servlet.ServletContext;
-import org.apache.wicket.util.tester.WicketTester;
-import org.junit.jupiter.api.BeforeEach;
+import org.apache.wicket.util.tester.FormTester;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 
 @SpringBootTest
-public class UserBrowsePageTest {
+public class UserBrowsePageTest extends BaseTest {
 
-    private WicketTester tester;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserBrowsePageTest.class);
 
-    @Autowired
-    private ApplicationContext context;
-
-    @Autowired
-    private ServletContext servletContext;
-
-    @Autowired
-    private WebUiProperties webUiProperties;
-
-    @BeforeEach
-    public void setup() {
-        WicketFactory.setApplicationContext(context);
-        WicketApplication application = new WicketApplication(this.webUiProperties);
-        this.tester = new WicketTester(application);
+    @Test
+    public void landingLoginPage() {
+        this.tester.startPage(UserBrowsePage.class);
+        this.tester.assertRenderedPage(LoginPage.class);
     }
 
     @Test
     public void landingPageTest() {
         this.tester.startPage(UserBrowsePage.class);
-        this.tester.assertRenderedPage(LoginPage.class);
+
+        FormTester formTester = this.tester.newFormTester("form");
+        formTester.setValue("username_field", "admin");
+        formTester.setValue("password_field", "admin");
+
+        formTester.submit("loginButton");
+
+        this.tester.startPage(UserBrowsePage.class);
+        this.tester.assertRenderedPage(UserBrowsePage.class);
     }
 
 }
