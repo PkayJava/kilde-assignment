@@ -115,7 +115,7 @@ public class BorrowerController {
      * @throws CloneNotSupportedException
      */
     @RequestMapping(path = DEPOSIT, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BorrowerDepositResponse> investorDeposit(RequestEntity<BorrowerDepositRequest> httpRequest) throws CloneNotSupportedException {
+    public ResponseEntity<BorrowerDepositResponse> borrowerDeposit(RequestEntity<BorrowerDepositRequest> httpRequest) throws CloneNotSupportedException {
         BorrowerDepositRequest request = httpRequest.getBody();
 
         if (request.getAmount() == null || request.getAmount().doubleValue() <= 0) {
@@ -123,7 +123,7 @@ public class BorrowerController {
         }
 
         boolean exists = borrowerRepository.existsByName(request.getBorrowerName());
-        if (exists) {
+        if (!exists) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "borrowerName is not found");
         }
 

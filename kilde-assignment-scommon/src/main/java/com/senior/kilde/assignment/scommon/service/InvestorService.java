@@ -93,7 +93,7 @@ public class InvestorService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public InvestorDepositResponse investorDeposit(InvestorDepositRequest request) throws CloneNotSupportedException {
         boolean exists = investorRepository.existsByName(request.getInvestorName());
-        if (exists) {
+        if (!exists) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "investorName is not found");
         }
 

@@ -30,7 +30,7 @@ public class AccountTransaction implements Serializable, Cloneable {
     private String note;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_type")
+    @Column(name = "type")
     private AccountTransactionType type;
 
     @Temporal(TemporalType.TIMESTAMP)
